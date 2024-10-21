@@ -11,6 +11,5 @@ public class BasicAuthController {
 
     @GetMapping("/test")
     public ResponseEntity<String> secureEndpointBasic() {
-        return ResponseEntity.ok("Basic Auth API accessed!");
-    }
+        return ResponseEntity.ok("Basic Auth API accessed!");    }
 }

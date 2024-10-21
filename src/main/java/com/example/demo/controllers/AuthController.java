@@ -1,15 +1,24 @@
 package com.example.demo.controllers;
 
 import com.example.demo.models.AuthRequest;
+import com.example.demo.models.UserSessionInfo;
 import com.example.demo.security.JwtUtil;
+import com.example.demo.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Base64;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -20,17 +29,41 @@ public class AuthController {
 
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<String> authenticate(@RequestBody AuthRequest authRequest) {
-        try{
-            authenticationManager.authenticate(
+    public ResponseEntity<String> authenticate(@RequestBody AuthRequest authRequest, HttpServletRequest request) {
+        HttpSession session = null;
+        try {
+            Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-        }catch (Exception e){
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            // Lưu thông tin người dùng vào session
+            // Tạo hoặc lấy session
+            session = request.getSession(true); // true để tạo session nếu chưa có
+
+            // Lấy Map userSessions từ session, nếu chưa có thì khởi tạo mới
+            Map<String, UserSessionInfo> userSessions = (Map<String, UserSessionInfo>) session.getAttribute("userSessions");
+            if (userSessions == null) {
+                userSessions = new HashMap<>();
+            }
+
+            // Kiểm tra nếu user đã đăng nhập chưa
+            if (userSessions.containsKey(authRequest.getUsername())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User already logged in");
+            }
+            String ipAddress = request.getRemoteAddr();
+            LocalDateTime tokenExpiry = LocalDateTime.now().plus(1, ChronoUnit.MINUTES);
+            UserSessionInfo userSessionInfo = new UserSessionInfo(authRequest.getUsername(), ipAddress, tokenExpiry);
+            userSessions.put(authRequest.getUsername(), userSessionInfo);
+            session.setAttribute("userSessions", userSessions);
+        } catch (Exception e) {
             System.out.println(e);
         }
         String jwt = jwtUtil.generateToken(authRequest.getUsername());
-        return ResponseEntity.ok(jwt);
+        return ResponseEntity.ok(jwt + "<br>" + session.getId());
     }
 
     @GetMapping("/secure-endpoint")

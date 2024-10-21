@@ -1,10 +1,8 @@
 package com.example.demo.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -17,6 +15,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     public CustomUserDetailsService() {
         // Dữ liệu người dùng tĩnh cho ví dụ
         users.put("user", "$2y$12$0.yS/K01LPQccJpjzoIrEOI3enYa8Jcj8QuWoUyEk7W62EUwp3BQm"); //password
+        users.put("user1", "$2y$12$0.yS/K01LPQccJpjzoIrEOI3enYa8Jcj8QuWoUyEk7W62EUwp3BQm"); //password
+        users.put("user2", "$2y$12$0.yS/K01LPQccJpjzoIrEOI3enYa8Jcj8QuWoUyEk7W62EUwp3BQm"); //password
+        users.put("user3", "$2y$12$0.yS/K01LPQccJpjzoIrEOI3enYa8Jcj8QuWoUyEk7W62EUwp3BQm"); //password
         users.put("admin", "admin123");
     }
 

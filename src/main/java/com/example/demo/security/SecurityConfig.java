@@ -3,7 +3,6 @@ package com.example.demo.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -13,7 +12,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -71,6 +69,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/authenticate").permitAll()
+                        .requestMatchers("/api/checkLogin").permitAll()
                         .requestMatchers("/api/basic/**").authenticated() // Basic Auth cho các API bắt đầu bằng /api/basic/
                         .anyRequest().authenticated()
                 )
@@ -78,7 +77,7 @@ public class SecurityConfig {
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(new CustomAuthenticationEntryPoint())) // Xử lý xác thực Basic Auth
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Không sử dụng session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)) // Không sử dụng session
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class) // Thêm bộ lọc JWT
                 .anonymous(anonymous -> anonymous.disable());
 //                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class) //Khởi tạo context 1 lần và k lặp lại khởi tạo context
