@@ -44,6 +44,8 @@ public class AuthController {
             // Tạo hoặc lấy session
             session = request.getSession(true); // true để tạo session nếu chưa có
 
+
+
             // Lấy Map userSessions từ session, nếu chưa có thì khởi tạo mới
             Map<String, UserSessionInfo> userSessions = (Map<String, UserSessionInfo>) session.getAttribute("userSessions");
             if (userSessions == null) {
@@ -51,11 +53,22 @@ public class AuthController {
             }
 
             // Kiểm tra nếu user đã đăng nhập chưa
-            if (userSessions.containsKey(authRequest.getUsername())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User already logged in");
+            String username = authRequest.getUsername();
+            LocalDateTime now = LocalDateTime.now();
+
+            // Kiểm tra nếu user đã đăng nhập và phiên chưa hết hạn
+            if (userSessions.containsKey(username)) {
+                UserSessionInfo userSessionInfo = userSessions.get(username);
+                if (userSessionInfo.getLoginTime().isAfter(now)) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User already logged in");
+                } else {
+                    // Nếu phiên đã hết hạn, cho phép đăng nhập lại
+                    userSessions.remove(username);
+                }
             }
+
             String ipAddress = request.getRemoteAddr();
-            LocalDateTime tokenExpiry = LocalDateTime.now().plus(1, ChronoUnit.MINUTES);
+            LocalDateTime tokenExpiry = LocalDateTime.now().plus(2, ChronoUnit.MINUTES);
             UserSessionInfo userSessionInfo = new UserSessionInfo(authRequest.getUsername(), ipAddress, tokenExpiry);
             userSessions.put(authRequest.getUsername(), userSessionInfo);
             session.setAttribute("userSessions", userSessions);

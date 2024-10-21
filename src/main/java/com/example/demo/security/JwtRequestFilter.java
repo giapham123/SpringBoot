@@ -41,69 +41,63 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
             username1 = jwtUtil.extractUsername(jwt);
-        }
-        ////////////////////////////////////////////////////////////////////////////////////////////////
-        String sessionId = null;
-        Cookie[] cookies = request.getCookies();
 
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("JSESSIONID".equals(cookie.getName())) {
-                    sessionId = cookie.getValue();
-                    break;
-                }
-            }
-        }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
+            String sessionId = null;
+            Cookie[] cookies = request.getCookies();
 
-        // Nếu không có session ID, trả về lỗi UNAUTHORIZED
-        if (sessionId == null) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No session ID found");
-            return;
-        }
-
-        // Lấy session từ session ID
-        HttpSession session = request.getSession(false); // false để không tạo mới
-
-        if (session != null && sessionId.equals(session.getId())) {
-            Map<String, UserSessionInfo> userSessions = (Map<String, UserSessionInfo>) session.getAttribute("userSessions");
-
-            if (userSessions != null) {
-                if(userSessions.entrySet().isEmpty()){
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Session ID, All User");
-                    return; // Ngăn không cho tiếp tục xử lý request
-                }
-                String username = null; // Có thể lấy từ JWT hoặc cách khác
-                LocalDateTime now = LocalDateTime.now();
-
-                // Duyệt qua từng người dùng trong Map
-                for (Map.Entry<String, UserSessionInfo> entry : userSessions.entrySet()) {
-                    username = entry.getKey();
-                    UserSessionInfo userSessionInfo = entry.getValue();
-                    long minutesElapsed = ChronoUnit.MINUTES.between(userSessionInfo.getLoginTime(), now);
-
-                    if(username.equals(username1)){
-                        if (minutesElapsed >= USER_SESSION_TIMEOUT_MINUTES) {
-                            // Nếu session đã hết hạn, xóa user khỏi session
-                            userSessions.remove(username);
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Session expired for user: " + username);
-                            return; // Ngăn không cho tiếp tục xử lý request
-                        } else {
-                            // Reset thời gian đăng nhập
-                            userSessionInfo.setLoginTime(now);
-                            userSessions.put(username, userSessionInfo); // Cập nhật lại
-                        }
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("JSESSIONID".equals(cookie.getName())) {
+                        sessionId = cookie.getValue();
+                        break;
                     }
                 }
-
-                // Cập nhật lại userSessions trong session
-                session.setAttribute("userSessions", userSessions);
             }
-        } else {
-            // Nếu session không tồn tại hoặc không trùng với session ID
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid session ID");
-            return; // Ngăn không cho tiếp tục xử lý request
+
+            // Nếu không có session ID, trả về lỗi UNAUTHORIZED
+            if (sessionId == null) {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No session ID found");
+                return;
+            }
+
+            // Lấy session từ session ID
+            HttpSession session = request.getSession(false); // false để không tạo mới
+
+            if (session != null && sessionId.equals(session.getId())) {
+                Map<String, UserSessionInfo> userSessions = (Map<String, UserSessionInfo>) session.getAttribute("userSessions");
+
+                if (userSessions != null && userSessions.containsKey(username1)) {
+                    UserSessionInfo userSessionInfo = userSessions.get(username1);
+                    LocalDateTime now = LocalDateTime.now();
+//                    long minutesElapsed = ChronoUnit.MINUTES.between(userSessionInfo.getLoginTime(), now);
+
+                    if (!userSessionInfo.getLoginTime().isAfter(now)) {
+                        // Nếu session đã hết hạn, xóa user khỏi session
+                        userSessions.remove(username1);
+                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Session expired for user: " + username1);
+                        return; // Ngăn không cho tiếp tục xử lý request
+                    } else {
+                        // Reset thời gian đăng nhập
+                        userSessionInfo.setLoginTime(LocalDateTime.now().plus(2, ChronoUnit.MINUTES));
+                        userSessions.put(username1, userSessionInfo); // Cập nhật lại
+                    }
+
+                    // Cập nhật lại userSessions trong session
+                    session.setAttribute("userSessions", userSessions);
+                } else {
+                    // Nếu username1 không tồn tại trong userSessions
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid session for user: " + username1);
+                    return; // Ngăn không cho tiếp tục xử lý request
+                }
+            } else {
+                // Nếu session không tồn tại hoặc không trùng với session ID
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid session ID");
+                return; // Ngăn không cho tiếp tục xử lý request
+            }
+            ////////////////////////////////////////////////////////////////////////////////////////////////
         }
-        ////////////////////////////////////////////////////////////////////////////////////////////////
+
         if (username1 != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username1);
             if (jwtUtil.validateToken(jwt, userDetails.getUsername())) {
