@@ -70,6 +70,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/authenticate").permitAll()
                         .requestMatchers("/api/checkLogin").permitAll()
+                        .requestMatchers("/send").permitAll()
                         .requestMatchers("/api/basic/**").authenticated() // Basic Auth cho các API bắt đầu bằng /api/basic/
                         .anyRequest().authenticated()
                 )
