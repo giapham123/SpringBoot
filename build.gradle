@@ -27,6 +27,13 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt:0.9.0'
 	implementation 'javax.xml.bind:jaxb-api:2.3.1'    // Add JAXB for Java 9+
 	implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'  // Optional runtime
+
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.16.1'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '4.16.1'
+	// the 2 lines below didnt fix anything. they are from https://github.com/SeleniumHQ/seleniumhq.github.io/blob/trunk/examples/java/build.gradle#L13-L14
+
+	implementation 'org.seleniumhq.selenium:selenium-java:4.8.0'  // Ensure this is up to date
+	implementation 'io.github.bonigarcia:webdrivermanager:5.5.1'    // Ensure this is the latest version
 }
 
 tasks.named('test') {
