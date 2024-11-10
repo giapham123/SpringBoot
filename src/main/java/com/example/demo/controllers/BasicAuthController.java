@@ -23,8 +23,10 @@ public class BasicAuthController {
     @GetMapping("/test")
     public ResponseEntity<String> secureEndpointBasic() throws InterruptedException {
         // Set up the ChromeDriver path
-
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\Admin\\Downloads\\chromedriver-win64\\chromedriver.exe");
+        //For windown
+//        System.setProperty("webdriver.chrome.driver", "C:\\Users\\Admin\\Downloads\\chromedriver-win64\\chromedriver.exe");
+        //For mac
+        System.setProperty("webdriver.chrome.driver", "/Users/giapham/Documents/chromedriver-mac-x64/chromedriver");
 
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.facebook.com");
