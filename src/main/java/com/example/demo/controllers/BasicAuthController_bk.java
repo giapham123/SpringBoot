@@ -21,7 +21,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 @RestController
 @RequestMapping("/api/basic")
-public class BasicAuthController {
+public class BasicAuthController_bk {
 
     @GetMapping("/test")
     public ResponseEntity<String> secureEndpointBasic() {
@@ -90,9 +90,9 @@ public class BasicAuthController {
                 Thread.sleep(5000); // Wait for the next set of groups to load
 
                 WebElement clickSelectGroup = wait.until(
-                            ExpectedConditions.presenceOfElementLocated(By.xpath("//span[contains(.,'" + group + "')]"))
-                    );
-                    clickSelectGroup.click();
+                        ExpectedConditions.presenceOfElementLocated(By.xpath("//span[contains(.,'" + group + "')]"))
+                );
+                clickSelectGroup.click();
                 WebElement clickPost = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[3]/div[3]/div/div/div")));
                 clickPost.click();
 
