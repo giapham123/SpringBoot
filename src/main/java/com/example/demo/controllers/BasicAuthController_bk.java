@@ -20,7 +20,7 @@ import java.util.List;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 @RestController
-@RequestMapping("/api/basic")
+@RequestMapping("/api/basic1")
 public class BasicAuthController_bk {
 
     @GetMapping("/test")

@@ -24,7 +24,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 public class BasicAuthController {
 
     @GetMapping("/test")
-    public ResponseEntity<String> secureEndpointBasic() {
+    public ResponseEntity<String> secureEndpointBasic(String urlPost) {
         System.setProperty("webdriver.chrome.driver", "/Users/giapham/Documents/chromedriver-mac-x64/chromedriver");
 
         ChromeOptions options = new ChromeOptions();
@@ -55,7 +55,7 @@ public class BasicAuthController {
         }
 
         // Navigate to the post page after adding cookies
-        driver.navigate().to("https://www.facebook.com/tuvanphapluat.hp/posts/122205601838064417");
+        driver.navigate().to("https://www.facebook.com/tuvanphapluat.hp/posts/122203663856064417");
         List<String> groupName = new ArrayList<>();
         groupName.add("LUẬT SƯ VIỆT NAM");
         groupName.add("Luật sư tư vấn miễn phí");
@@ -72,27 +72,48 @@ public class BasicAuthController {
         groupName.add("CHUYỆN NGHỀ LUẬT SƯ");
         groupName.add("Luật sư tư vấn Pháp luật miễn phí");
         groupName.add("TÔI HỌC LUẬT - ULAW");
+        groupName.add("LUẬT SƯ TƯ VẤN PHÁP LUẬT MIỄN PHÍ TẠI THÀNH PHỐ HỒ CHÍ MINH");
+        groupName.add("Luật Sư tư vấn Doanh Nghiệp, Hộ Kinh doanh, Thuế, Giấy phép con miễn phí");
+        groupName.add("Tư vấn ly hôn miễn phí toàn quốc");
+        groupName.add("LUẬT SƯ TƯ VẤN LY HÔN MIỄN PHÍ (Thuận tình, Đơn phương, Yếu tố nước ngoài)");
+        groupName.add("Tư vấn luật miễn phí từ luật sư giỏi");
+        groupName.add("LUẬT SƯ HÌNH SỰ - TƯ VẤN MIỄN PHÍ");
+        groupName.add("DIỄN ĐÀN NHỮNG NGƯỜI HÀNH NGHỀ LUẬT");
+        groupName.add("Ở đây có Luật sư - Tư vấn pháp luật");
+        groupName.add("NGHIỆN LUẬT");
+        groupName.add("Luật Sư Tư Vấn Luật Miễn Phí-Luật Sư Tư Vấn Luật Miễn Phí");
+        groupName.add("Cộng đồng hỗ trợ tư vấn pháp luật miễn phí (Thuế, Đất đai, Doanh nghiệp...)");
+        groupName.add("CỘng ĐỒng Tư Vấn Pháp Luật");
+        groupName.add("Luật Sư Tư Vấn Pháp Luật Miễn Phí Online");
+        groupName.add("Báo Pháp Luật");
         try {
             for (String group : groupName) {
                 System.out.println("Group Name: " + group);
-
+                //Click share at post
                 WebElement clickShare = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[3]/div/div/div[2]/span/span")));
                 clickShare.click();
-
+                //Click group at popup share
                 WebElement clickGroup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[4]/div/div/div/div/div/i")));
                 clickGroup.click();
-
+                //Input search for find group
                 WebElement inputSearch = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[2]/div/div/div/div/div/div/div/label/input")));
                 inputSearch.click();
                 WebElement inputSearchValue = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[2]/div/div/div/div/div/div/div/label/input")));
                 String targetGroup = group;  // Replace with your target group name
                 inputSearchValue.sendKeys(targetGroup);
-                Thread.sleep(5000); // Wait for the next set of groups to load
-
-                WebElement clickSelectGroup = wait.until(
+                Thread.sleep(2000); // Wait for the next set of groups to load
+                //Select group for share
+                try {
+                    WebElement clickSelectGroup = wait.until(
                             ExpectedConditions.presenceOfElementLocated(By.xpath("//span[contains(.,'" + group + "')]"))
                     );
                     clickSelectGroup.click();
+                }
+                catch(Exception e){
+                    System.out.println("Dont have this group: "+ groupName);
+                    continue;
+                }
+                //Click post
                 WebElement clickPost = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[3]/div[3]/div/div/div")));
                 clickPost.click();
 
