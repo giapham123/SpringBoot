@@ -20,4 +20,9 @@ public class ApiController {
     public CompletableFuture<String> handleRequest(@RequestParam String userId,@RequestParam Integer time) throws InterruptedException {
         return apiService.processRequest(userId,time);
     }
+
+    @GetMapping("/aaaa")
+    public String handleRequest1(@RequestParam String userId,@RequestParam Integer time) {
+        return apiService.processRequest1(userId,time);
+    }
 }

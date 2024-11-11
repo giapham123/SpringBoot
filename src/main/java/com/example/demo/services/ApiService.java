@@ -9,10 +9,46 @@ public class ApiService {
 
     @Async("taskExecutor")
     public CompletableFuture<String> processRequest(String userId, Integer time) throws InterruptedException {
-        // Giả lập xử lý nhiệm vụ
-        Thread.sleep(time); // Xử lý mất 2 giây cho mỗi yêu cầu
+        return CompletableFuture.supplyAsync(() -> {
+            // Giả lập xử lý nhiệm vụ có thể gây ra ngoại lệ
+            if (time < 0) {
+                throw new IllegalArgumentException("Thời gian không hợp lệ!");
+            }
+            // Giả lập xử lý nhiệm vụ
+            long startTime = System.currentTimeMillis(); // Thời gian bắt đầu xử lý
+            System.out.println("Bắt đầu xử lý cho user " + userId + " tại " + startTime + " bằng luồng " + Thread.currentThread().getName());
+
+            try {
+                Thread.sleep(time); // Giả lập xử lý tác vụ
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            long endTime = System.currentTimeMillis(); // Thời gian kết thúc xử lý
+            System.out.println("Kết thúc xử lý cho user " + userId + " tại " + endTime + " bằng luồng " + Thread.currentThread().getName());
+
+            String result = "Kết quả cho user " + userId;
+            return result;
+        }).exceptionally(ex -> {
+            System.out.println("Ngoại lệ trong tác vụ async: " + ex.getMessage());
+            return "Có lỗi xảy ra!";
+        });
+    }
+
+    public String processRequest1(String userId, Integer time)  {
+        long startTime = System.currentTimeMillis(); // Thời gian bắt đầu xử lý
+        System.out.println("Bắt đầu xử lý cho user " + userId + " tại " + startTime);
+
+        try {
+            Thread.sleep(time); // Giả lập xử lý tác vụ
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        long endTime = System.currentTimeMillis(); // Thời gian kết thúc xử lý
+        System.out.println("Kết thúc xử lý cho user " + userId + " tại " + endTime);
+
         String result = "Kết quả cho user " + userId;
-        System.out.println("Xử lý xong cho " + userId);
-        return CompletableFuture.completedFuture(result);
+        return result;
     }
 }
