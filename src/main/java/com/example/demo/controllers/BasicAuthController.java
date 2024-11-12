@@ -42,15 +42,15 @@ public class BasicAuthController {
         List<Cookie> cookies = new ArrayList<>();
         cookies.add(new Cookie("b_user", "61560391100126"));
         cookies.add(new Cookie("c_user", "100007769235838"));
-        cookies.add(new Cookie("datr", "J5snZ6ojUq88q-5OSI6_yXnF"));
-        cookies.add(new Cookie("fr", "1zAFnXnH1dkIlMrru.AWWn3GpKjlG6aru68YVEFyi3qSY.BnMWNI..AAA.0.0.BnMWgi.AWXked_QbgA"));
+        cookies.add(new Cookie("datr", "U75EZr-96XGfZQxL1SfKqCYg"));
+        cookies.add(new Cookie("fr", "19iXxFLGIGy6rFS4n.AWVnnE0jjG7xGNiQZLcoqULdjWs.BnM0mu..AAA.0.0.BnM1LE.AWXswWiNdXQ"));
         cookies.add(new Cookie("i_user", "61551932516721"));
         cookies.add(new Cookie("locale", "en_US"));
         cookies.add(new Cookie("ps_l", "1"));
         cookies.add(new Cookie("ps_n", "1"));
-        cookies.add(new Cookie("sb", "J5snZzIet1Ek6EH1ijk2lqLi"));
-        cookies.add(new Cookie("wd", "342x754"));
-        cookies.add(new Cookie("xs", "48%3AqX5zpi8eTXCxug%3A2%3A1731291093%3A-1%3A6191"));
+        cookies.add(new Cookie("sb", "JmIpZG_pK3duwRSUYwZA-Mwa"));
+        cookies.add(new Cookie("wd", "906x983"));
+        cookies.add(new Cookie("xs", "33%3A7BAMKsuAgazkTA%3A2%3A1717076724%3A-1%3A6191%3ACrRmDO5Ou4vwHA%3AAcVbaDQhIKglET53RN6j-0t7Eg6xpJnYtqODor0EAkKG"));
 
         // Add necessary cookies here
         for (Cookie cookie : cookies) {
@@ -58,37 +58,37 @@ public class BasicAuthController {
         }
 
         // Navigate to the post page after adding cookies
-        driver.navigate().to("https://www.facebook.com/tuvanphapluat.hp/posts/122203663856064417");
+        driver.navigate().to("https://www.facebook.com/tuvanphapluat.hp/posts/122206677680064417");
         List<String> groupName = new ArrayList<>();
-        groupName.add("LUẬT SƯ VIỆT NAM");
-        groupName.add("Luật sư tư vấn miễn phí");
-        groupName.add("Luật sư Tư vấn Pháp luật 247");
-        groupName.add("Học Luật Đừng Học Đại");
-        groupName.add("Cùng Hiểu Luật");
-        groupName.add("Việc làm Nghề Luật - Tư vấn Pháp Luật - HLU");
-        groupName.add("Hội những người thích Học Luật ☑\uFE0F");
-        groupName.add("NGHỀ LUẬT VÀ VIỆC LÀM");
-        groupName.add("CỘNG ĐỒNG SINH VIÊN LUẬT");
-        groupName.add("SINH VIÊN NGÀNH LUẬT");
-        groupName.add("Học Luật");
-        groupName.add("Diễn đàn luật sư LOF");
-        groupName.add("CHUYỆN NGHỀ LUẬT SƯ");
-        groupName.add("Luật sư tư vấn Pháp luật miễn phí");
-        groupName.add("TÔI HỌC LUẬT - ULAW");
-        groupName.add("LUẬT SƯ TƯ VẤN PHÁP LUẬT MIỄN PHÍ TẠI THÀNH PHỐ HỒ CHÍ MINH");
-        groupName.add("Luật Sư tư vấn Doanh Nghiệp, Hộ Kinh doanh, Thuế, Giấy phép con miễn phí");
-        groupName.add("Tư vấn ly hôn miễn phí toàn quốc");
-        groupName.add("LUẬT SƯ TƯ VẤN LY HÔN MIỄN PHÍ (Thuận tình, Đơn phương, Yếu tố nước ngoài)");
-        groupName.add("Tư vấn luật miễn phí từ luật sư giỏi");
-        groupName.add("LUẬT SƯ HÌNH SỰ - TƯ VẤN MIỄN PHÍ");
-        groupName.add("DIỄN ĐÀN NHỮNG NGƯỜI HÀNH NGHỀ LUẬT");
-        groupName.add("Ở đây có Luật sư - Tư vấn pháp luật");
-        groupName.add("NGHIỆN LUẬT");
-        groupName.add("Luật Sư Tư Vấn Luật Miễn Phí-Luật Sư Tư Vấn Luật Miễn Phí");
-        groupName.add("Cộng đồng hỗ trợ tư vấn pháp luật miễn phí (Thuế, Đất đai, Doanh nghiệp...)");
-        groupName.add("CỘng ĐỒng Tư Vấn Pháp Luật");
-        groupName.add("Luật Sư Tư Vấn Pháp Luật Miễn Phí Online");
-        groupName.add("Báo Pháp Luật");
+//        groupName.add("LUẬT SƯ VIỆT NAM");
+//        groupName.add("Luật sư tư vấn miễn phí");
+//        groupName.add("Luật sư Tư vấn Pháp luật 247");
+//        groupName.add("Học Luật Đừng Học Đại");
+//        groupName.add("Cùng Hiểu Luật");
+//        groupName.add("Việc làm Nghề Luật - Tư vấn Pháp Luật - HLU");
+//        groupName.add("Hội những người thích Học Luật ☑\uFE0F");
+//        groupName.add("NGHỀ LUẬT VÀ VIỆC LÀM");
+//        groupName.add("CỘNG ĐỒNG SINH VIÊN LUẬT");
+//        groupName.add("SINH VIÊN NGÀNH LUẬT");
+//        groupName.add("Học Luật");
+//        groupName.add("Diễn đàn luật sư LOF");
+//        groupName.add("CHUYỆN NGHỀ LUẬT SƯ");
+//        groupName.add("Luật sư tư vấn Pháp luật miễn phí");
+//        groupName.add("TÔI HỌC LUẬT - ULAW");
+//        groupName.add("LUẬT SƯ TƯ VẤN PHÁP LUẬT MIỄN PHÍ TẠI THÀNH PHỐ HỒ CHÍ MINH");
+//        groupName.add("Luật Sư tư vấn Doanh Nghiệp, Hộ Kinh doanh, Thuế, Giấy phép con miễn phí");
+//        groupName.add("Tư vấn ly hôn miễn phí toàn quốc");
+//        groupName.add("LUẬT SƯ TƯ VẤN LY HÔN MIỄN PHÍ (Thuận tình, Đơn phương, Yếu tố nước ngoài)");
+//        groupName.add("Tư vấn luật miễn phí từ luật sư giỏi");
+//        groupName.add("LUẬT SƯ HÌNH SỰ - TƯ VẤN MIỄN PHÍ");
+//        groupName.add("DIỄN ĐÀN NHỮNG NGƯỜI HÀNH NGHỀ LUẬT");
+//        groupName.add("Ở đây có Luật sư - Tư vấn pháp luật");
+//        groupName.add("NGHIỆN LUẬT");
+//        groupName.add("Luật Sư Tư Vấn Luật Miễn Phí-Luật Sư Tư Vấn Luật Miễn Phí");
+//        groupName.add("Cộng đồng hỗ trợ tư vấn pháp luật miễn phí (Thuế, Đất đai, Doanh nghiệp...)");
+//        groupName.add("CỘng ĐỒng Tư Vấn Pháp Luật");
+//        groupName.add("Luật Sư Tư Vấn Pháp Luật Miễn Phí Online");
+//        groupName.add("Báo Pháp Luật");
         try {
             for (String group : groupName) {
                 System.out.println("Group Name: " + group);
@@ -121,7 +121,7 @@ public class BasicAuthController {
                 clickPost.click();
 
                 // Pause for a few seconds to ensure the post completes
-                Thread.sleep(5000);
+                Thread.sleep(10000);
             }
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());

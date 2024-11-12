@@ -1,35 +1,30 @@
-package com.example.demo.controllers;
+package com.example.demo.Facebook.services;
 
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.interactions.Actions;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.demo.Facebook.models.SharePostPageModel;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.JavascriptExecutor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import org.openqa.selenium.chrome.ChromeOptions;
 
-@RestController
-@RequestMapping("/api/basic1")
-public class BasicAuthController_bk {
+@Service
+public class SharePostService {
 
-    @GetMapping("/test")
-    public ResponseEntity<String> secureEndpointBasic(String urlPost) {
-        //For Win
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\Admin\\Downloads\\chromedriver-win64\\chromedriver.exe");
-        //For Mac
-//        System.setProperty("webdriver.chrome.driver", "/Users/giapham/Documents/chromedriver-mac-x64/chromedriver");
-
+    public ResponseEntity<String> sharePostPage(SharePostPageModel sharePostPageModel){
+        if(sharePostPageModel.getTypeComp().toUpperCase().equals("MAC")){
+            System.setProperty("webdriver.chrome.driver", "/Users/giapham/Documents/chromedriver-mac-x64/chromedriver");
+        }else{
+            System.setProperty("webdriver.chrome.driver", "C:\\Users\\Admin\\Downloads\\chromedriver-win64\\chromedriver.exe");
+        }
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-notifications");
         options.setExperimentalOption("detach", false);
@@ -40,17 +35,28 @@ public class BasicAuthController_bk {
         // Add cookies for login
         driver.get("https://www.facebook.com");
         List<Cookie> cookies = new ArrayList<>();
+//        cookies.add(new Cookie("b_user", "61560391100126"));
+//        cookies.add(new Cookie("c_user", "100007769235838"));
+//        cookies.add(new Cookie("datr", "U75EZr-96XGfZQxL1SfKqCYg"));
+//        cookies.add(new Cookie("fr", "19iXxFLGIGy6rFS4n.AWVnnE0jjG7xGNiQZLcoqULdjWs.BnM0mu..AAA.0.0.BnM1LE.AWXswWiNdXQ"));
+//        cookies.add(new Cookie("i_user", "61551932516721"));
+//        cookies.add(new Cookie("locale", "en_US"));
+//        cookies.add(new Cookie("ps_l", "1"));
+//        cookies.add(new Cookie("ps_n", "1"));
+//        cookies.add(new Cookie("sb", "JmIpZG_pK3duwRSUYwZA-Mwa"));
+//        cookies.add(new Cookie("wd", "906x983"));
+//        cookies.add(new Cookie("xs", "33%3A7BAMKsuAgazkTA%3A2%3A1717076724%3A-1%3A6191%3ACrRmDO5Ou4vwHA%3AAcVbaDQhIKglET53RN6j-0t7Eg6xpJnYtqODor0EAkKG"));
         cookies.add(new Cookie("b_user", "61560391100126"));
         cookies.add(new Cookie("c_user", "100007769235838"));
         cookies.add(new Cookie("datr", "U75EZr-96XGfZQxL1SfKqCYg"));
-        cookies.add(new Cookie("fr", "19iXxFLGIGy6rFS4n.AWVnnE0jjG7xGNiQZLcoqULdjWs.BnM0mu..AAA.0.0.BnM1LE.AWXswWiNdXQ"));
-        cookies.add(new Cookie("i_user", "61551932516721"));
+        cookies.add(new Cookie("fr", "1MS8qI2T39Ppe6iDy.AWVeVI2d9JUya27R-cyeqFM6H24.BnM2fM..AAA.0.0.BnM2fM.AWU5fBNQsns"));
+        cookies.add(new Cookie("i_user", "100063707646753"));
         cookies.add(new Cookie("locale", "en_US"));
         cookies.add(new Cookie("ps_l", "1"));
         cookies.add(new Cookie("ps_n", "1"));
         cookies.add(new Cookie("sb", "JmIpZG_pK3duwRSUYwZA-Mwa"));
         cookies.add(new Cookie("wd", "906x983"));
-        cookies.add(new Cookie("xs", "33%3A7BAMKsuAgazkTA%3A2%3A1717076724%3A-1%3A6191%3ACrRmDO5Ou4vwHA%3AAcVbaDQhIKglET53RN6j-0t7Eg6xpJnYtqODor0EAkKG"));
+        cookies.add(new Cookie("xs", "33%3A7BAMKsuAgazkTA%3A2%3A1717076724%3A-1%3A6191%3ACrRmDO5Ou4vwHA%3AAcXsuoyPowZyjm5Ri3tsxMWLvwfeFC4Urm2ePPziP4vv"));
 
         // Add necessary cookies here
         for (Cookie cookie : cookies) {
@@ -58,8 +64,8 @@ public class BasicAuthController_bk {
         }
 
         // Navigate to the post page after adding cookies
-        driver.navigate().to("https://www.facebook.com/tuvanphapluat.hp/posts/122206677680064417");
-        List<String> groupName = new ArrayList<>();
+//        driver.navigate().to("https://www.facebook.com/tuvanphapluat.hp/posts/122206677680064417");
+        driver.navigate().to("https://www.facebook.com/"+sharePostPageModel.getPageName()+"/posts/"+sharePostPageModel.getIdPost());
 //        groupName.add("LUẬT SƯ VIỆT NAM");
 //        groupName.add("Luật sư tư vấn miễn phí");
 //        groupName.add("Luật sư Tư vấn Pháp luật 247");
@@ -90,7 +96,7 @@ public class BasicAuthController_bk {
 //        groupName.add("Luật Sư Tư Vấn Pháp Luật Miễn Phí Online");
 //        groupName.add("Báo Pháp Luật");
         try {
-            for (String group : groupName) {
+            for (String group : sharePostPageModel.getGroupName()) {
                 System.out.println("Group Name: " + group);
                 //Click share at post
                 WebElement clickShare = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[3]/div/div/div[2]/span/span")));
@@ -113,7 +119,7 @@ public class BasicAuthController_bk {
                     clickSelectGroup.click();
                 }
                 catch(Exception e){
-                    System.out.println("Dont have this group: "+ groupName);
+                    System.out.println("Dont have this group: "+ sharePostPageModel.getGroupName());
                     continue;
                 }
                 //Click post
