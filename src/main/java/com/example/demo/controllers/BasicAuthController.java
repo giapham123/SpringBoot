@@ -25,7 +25,10 @@ public class BasicAuthController {
 
     @GetMapping("/test")
     public ResponseEntity<String> secureEndpointBasic(String urlPost) {
-        System.setProperty("webdriver.chrome.driver", "/Users/giapham/Documents/chromedriver-mac-x64/chromedriver");
+        //For Win
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\Admin\\Downloads\\chromedriver-win64\\chromedriver.exe");
+        //For Mac
+//        System.setProperty("webdriver.chrome.driver", "/Users/giapham/Documents/chromedriver-mac-x64/chromedriver");
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-notifications");
