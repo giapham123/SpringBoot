@@ -2,8 +2,10 @@ package com.example.demo.controllers;
 
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.interactions.Actions;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.openqa.selenium.By;
@@ -14,6 +16,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.JavascriptExecutor;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -131,5 +135,83 @@ public class BasicAuthController {
         }
 
         return ResponseEntity.ok("Basic Auth API accessed!");
+    }
+
+    @PostMapping("/test11")
+    public ResponseEntity<String> secureEndpointBasic1() {
+        System.setProperty("webdriver.chrome.driver", "D:\\PROJECT\\chromedriver-win64\\chromedriver.exe");
+
+        try {
+            String userProfilePath = "C:\\Users\\mafc4568\\AppData\\Local\\Google\\Chrome\\User Data";  // Windows path
+
+
+            // Configure ChromeOptions to use existing Chrome profile
+            ChromeOptions options = new ChromeOptions();
+            options.setBinary("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
+
+            // Path to Chrome's user data directory
+            options.addArguments("user-data-dir=" + userProfilePath);
+
+            // Optional: specify the profile within the user data directory
+            options.addArguments("profile-directory=Default");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--remote-debugging-port=9222");
+            // Start Chrome with the specified profile
+            ChromeDriver driver = new ChromeDriver(options);
+            driver.get("https://chatgpt.com/");
+            // Open a new tab using JavaScript
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("window.open('https://www.example.com', '_blank');");
+
+            String originalTab = driver.getWindowHandle();
+            for (String handle : driver.getWindowHandles()) {
+                if (!handle.equals(originalTab)) {
+                    driver.switchTo().window(handle);
+                    break;
+                }
+            }
+
+            driver.get("https://github.com/");
+            if( checkLinkStatus("https://aaaaaaaaaaaaaaaaaaaaaaaaaaaa.com/")){
+                driver.navigate().to("https://aaaaaaaaaaaaaaaaaaaaaaaaaaaa.com/");
+                String a = driver.getPageSource();
+                return new ResponseEntity<>(a, HttpStatus.OK);
+            }else{
+                driver.navigate().to("https://github.com/");
+                String a = driver.getPageSource();
+                return new ResponseEntity<>(a,HttpStatus.OK);
+            }
+
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+        }
+
+        return new ResponseEntity<>("numbers",HttpStatus.OK);
+    }
+    private static boolean checkLinkStatus(String urlString) {
+        try {
+            // Create a URL object
+            URL url = new URL(urlString);
+
+            // Open an HTTP connection
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("HEAD"); // Use HEAD request to avoid downloading content
+
+            // Get the response code
+            int responseCode = httpURLConnection.getResponseCode();
+
+            // Print out the response code
+            if (responseCode != 200) {
+                return false;
+            } else {
+                return true;
+            }
+
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
