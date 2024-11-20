@@ -46,8 +46,8 @@ public class AutoCommentPostInGroupService {
         cookies.add(new Cookie("ps_n", "1"));
         cookies.add(new Cookie("sb", "mwg0Z16z_I75ZUIAXFwsTihu"));//4
         cookies.add(new Cookie("wd", "872x75"));
-        cookies.add(new Cookie("fr", "11iZMNBDaCFFhGkbk.AWVzh9MCkJ2tlqbhvEhgFumKjE0.BnPWQZ..AAA.0.0.BnPZG3.AWXdi5ZHMLk"));//3
-        cookies.add(new Cookie("xs", "11%3AWe5fJeHEAhBxyg%3A2%3A1731463337%3A-1%3A-1%3A%3AAcXGLjzU8I-4z_bOtDFNlTvRBaSJadBy_8UAZCUabTk"));
+        cookies.add(new Cookie("fr", "1K0gQHZbuaUpoSS03.AWV5LR_JDEgmfee-hSvtEMAEXEw.BnPZyS..AAA.0.0.BnPe1j.AWXlZtq1FII"));//3
+        cookies.add(new Cookie("xs", "14%3APDjZjuM9Bp0zjw%3A2%3A1732111650%3A-1%3A-1"));
 
         // Add necessary cookies here
         for (Cookie cookie : cookies) {
@@ -93,6 +93,20 @@ public class AutoCommentPostInGroupService {
         for (String data : uniqueNumbers) {
             driver.navigate().to("https://facebook.com/groups/"+ autoPostGroup.getGroupId()+"/posts/"+data);
             Thread.sleep(5000);
+            try{
+                //
+                WebElement postBox = driver.findElement(By.xpath("//div[@aria-label='Answer as Ốp Lưng Điện Thoại Iphone - Samsung']"));
+                postBox.click();
+                postBox.sendKeys("Ib" + Keys.ENTER);
+                Thread.sleep(5000); // Wait for the next set of groups to load
+
+            }catch (Exception e){
+                WebElement postBox = driver.findElement(By.xpath("//div[@aria-label='Comment as Ốp Lưng Điện Thoại Iphone - Samsung']"));
+                postBox.click();
+                postBox.sendKeys("Ib" + Keys.ENTER);
+                Thread.sleep(5000); // Wait for the next set of groups to load
+            }
+
         }
         return ResponseEntity.ok("dá");
     }
