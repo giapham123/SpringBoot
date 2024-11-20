@@ -1,6 +1,6 @@
 package com.example.demo.Facebook.models;
 
-public class AutoCommentPostGroup {
+public class AutoPostGroup {
     private String typeComp;
     private String content;
     private String groupId;

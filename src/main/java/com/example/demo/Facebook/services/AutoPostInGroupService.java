@@ -1,7 +1,6 @@
 package com.example.demo.Facebook.services;
 
-import com.example.demo.Facebook.models.AutoCommentPostGroup;
-import com.example.demo.Facebook.models.SharePostPageModel;
+import com.example.demo.Facebook.models.AutoPostGroup;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -15,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class AutoCommentPostInGroupService {
-    public ResponseEntity<String> autoCommentPost(AutoCommentPostGroup autoCommentPostGroup) throws InterruptedException {
-        if(autoCommentPostGroup.getTypeComp().toUpperCase().equals("MAC")){
+public class AutoPostInGroupService {
+    public ResponseEntity<String> autoCommentPost(AutoPostGroup autoPostGroup) throws InterruptedException {
+        if(autoPostGroup.getTypeComp().toUpperCase().equals("MAC")){
             System.setProperty("webdriver.chrome.driver", "/Users/giapham/Documents/chromedriver-mac-x64/chromedriver");
         }else{
             System.setProperty("webdriver.chrome.driver", "C:\\Users\\Admin\\Downloads\\chromedriver-win64\\chromedriver.exe");
@@ -51,7 +50,7 @@ public class AutoCommentPostInGroupService {
         }
 
         // Navigate to the post page after adding cookies
-        driver.navigate().to("https://facebook.com/groups/"+autoCommentPostGroup.getGroupId());
+        driver.navigate().to("https://facebook.com/groups/"+ autoPostGroup.getGroupId());
 
         WebElement clickShare = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(.,'Write something...')]")));
         clickShare.click();
@@ -77,7 +76,7 @@ public class AutoCommentPostInGroupService {
 //            }
             //Input Content
             WebElement postBox = driver.findElement(By.xpath("//div[@aria-label='Create a public post…']"));
-            postBox.sendKeys(autoCommentPostGroup.getContent());
+            postBox.sendKeys(autoPostGroup.getContent());
             Thread.sleep(5000); // Wait for the next set of groups to load
 
             //Click Post Button
