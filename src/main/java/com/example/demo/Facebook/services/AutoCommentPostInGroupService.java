@@ -56,9 +56,6 @@ public class AutoCommentPostInGroupService {
 
         // Navigate to the post page after adding cookies
         driver.navigate().to("https://facebook.com/groups/"+ autoPostGroup.getGroupId());
-//        WebElement postBox = driver.findElement(By.xpath("//div[@type='password']"));
-//        postBox.sendKeys("27121994qweA!");
-//        Thread.sleep(5000); // Wait for the next set of groups to load
         for(int i =0; i<10; i++){
             // Tạo đối tượng JavascriptExecutor
             JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -71,7 +68,6 @@ public class AutoCommentPostInGroupService {
 
             System.out.println("Đã cuộn xuống cuối trang.");
         }
-        // Lấy tất cả các thẻ <a>
         // Lấy tất cả các thẻ <a>
         List<WebElement> links = driver.findElements(By.tagName("a"));
         Set<String> uniqueNumbers = new HashSet<>();
@@ -97,13 +93,13 @@ public class AutoCommentPostInGroupService {
                 //
                 WebElement postBox = driver.findElement(By.xpath("//div[@aria-label='Answer as Ốp Lưng Điện Thoại Iphone - Samsung']"));
                 postBox.click();
-                postBox.sendKeys("Ib" + Keys.ENTER);
+                postBox.sendKeys(autoPostGroup.getContent() + Keys.ENTER);
                 Thread.sleep(5000); // Wait for the next set of groups to load
 
             }catch (Exception e){
                 WebElement postBox = driver.findElement(By.xpath("//div[@aria-label='Comment as Ốp Lưng Điện Thoại Iphone - Samsung']"));
                 postBox.click();
-                postBox.sendKeys("Ib" + Keys.ENTER);
+                postBox.sendKeys(autoPostGroup.getContent() + Keys.ENTER);
                 Thread.sleep(5000); // Wait for the next set of groups to load
             }
 
