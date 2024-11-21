@@ -1,5 +1,6 @@
 package com.example.demo.Facebook.services;
 
+import com.example.demo.Facebook.commonFunc.ConfigCommonFunc;
 import com.example.demo.Facebook.models.GetUidUserInGroupModel;
 import com.example.demo.common.GenericResponse;
 import org.openqa.selenium.By;
@@ -13,7 +14,7 @@ import java.util.*;
 @Service
 public class GetAllGroupNameInPageService {
     @Autowired
-    com.example.demo.Facebook.commonFunc.configCommonFunc configCommonFunc;
+    ConfigCommonFunc configCommonFunc;
 
     public GenericResponse getAllGroupNameInPage(GetUidUserInGroupModel getUidUserInGroupModel) throws InterruptedException {
         GenericResponse rs = new GenericResponse();

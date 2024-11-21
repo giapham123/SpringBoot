@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class configCommonFunc {
+public class ConfigCommonFunc {
 
     public WebDriver loginByCookie(String compType){
         if (compType.toUpperCase().equals("MAC")) {
@@ -45,7 +45,7 @@ public class configCommonFunc {
         cookies.add(new Cookie("sb", "mwg0Z16z_I75ZUIAXFwsTihu"));//4
         cookies.add(new Cookie("wd", "872x75"));
         cookies.add(new Cookie("fr", "1K0gQHZbuaUpoSS03.AWV5LR_JDEgmfee-hSvtEMAEXEw.BnPZyS..AAA.0.0.BnPe1j.AWXlZtq1FII"));//3
-        cookies.add(new Cookie("xs", "14%3APDjZjuM9Bp0zjw%3A2%3A1732111650%3A-1%3A-1"));
+        cookies.add(new Cookie("xs", "34%3A4bgvH5iP6QEpgQ%3A2%3A1732172238%3A-1%3A-1"));
 
         // Add necessary cookies here
         for (Cookie cookie : cookies) {

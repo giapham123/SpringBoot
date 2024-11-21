@@ -6,9 +6,17 @@ import java.util.List;
 public class SharePostPageModel {
     private String idPost;
     private String pageName;
-
+    private int scrollNumbers;
     private String typeComp;
     private List<String> groupName =new ArrayList<>();
+
+    public int getScrollNumbers() {
+        return scrollNumbers;
+    }
+
+    public void setScrollNumbers(int scrollNumbers) {
+        this.scrollNumbers = scrollNumbers;
+    }
 
     public String getPageName() {
         return pageName;

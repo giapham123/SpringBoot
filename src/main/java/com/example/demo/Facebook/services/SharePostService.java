@@ -1,6 +1,9 @@
 package com.example.demo.Facebook.services;
 
+import com.example.demo.Facebook.commonFunc.ConfigCommonFunc;
+import com.example.demo.Facebook.models.GetUidUserInGroupModel;
 import com.example.demo.Facebook.models.SharePostPageModel;
+import com.example.demo.common.GenericResponse;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -9,15 +12,67 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class SharePostService {
+
+    @Autowired
+    ConfigCommonFunc configCommonFunc;
+
+    public GenericResponse getAllPostId(SharePostPageModel sharePostPageModel) throws InterruptedException {
+        GenericResponse rs = new GenericResponse();
+        WebDriver driver = configCommonFunc.loginByCookie(sharePostPageModel.getTypeComp());
+        driver.navigate().to("https://web.facebook.com/gpcarnews/");
+        configCommonFunc.scrollTopToEndPage(sharePostPageModel.getScrollNumbers(),driver);
+        try {
+            List<WebElement> links = driver.findElements(By.xpath("//a[@aria-label='Boost post']"));
+            Set<String> uniqueNumbers = new HashSet<>();
+
+            // In ra các URL hợp lệ
+            for (WebElement link : links) {
+                String url = link.getAttribute("href");
+                // Define the regex pattern
+                String regex = "target_id=(\\d+)&__cft__";
+                // Compile the pattern
+                Pattern pattern = Pattern.compile(regex);
+                // Match the pattern in the input string
+                Matcher matcher = pattern.matcher(url);
+                if (matcher.find()) {
+                    // Extract the number (group 1)
+                    String targetId = matcher.group(1);
+                    uniqueNumbers.add(targetId);
+                    System.out.println("Extracted target_id: " + targetId);
+                    break;
+                } else {
+                    System.out.println("No match found.");
+                }
+            }
+            System.out.println("Total groups in page: " + uniqueNumbers.size());
+
+            //Set data for return
+            Map resultData = new HashMap();
+            resultData.put("quantityPostId", uniqueNumbers.size());
+            resultData.put("dataPostId", uniqueNumbers);
+            rs.setData(resultData);
+            rs.setMessage("Get All Group In Page Success");
+            driver.quit();
+            return rs;
+        }catch (Exception e){
+            rs.setData(null);
+            rs.setMessage("Get All Group In Page Failed");
+            driver.quit();
+            System.out.println(e);
+            return rs;
+        }
+    }
 
     public ResponseEntity<String> sharePostPage(SharePostPageModel sharePostPageModel){
         if(sharePostPageModel.getTypeComp().toUpperCase().equals("MAC")){

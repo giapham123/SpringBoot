@@ -2,6 +2,7 @@ package com.example.demo.Facebook.controllers;
 
 import com.example.demo.Facebook.models.SharePostPageModel;
 import com.example.demo.Facebook.services.SharePostService;
+import com.example.demo.common.GenericResponse;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -39,7 +40,16 @@ public class AutoSharePostPageController {
     SharePostService sharePostService;
 
     @PostMapping("/share-post-page")
-    public ResponseEntity<String> secureEndpointBasic(@RequestBody SharePostPageModel sharePostPageModel) {
+    public ResponseEntity<String> secureEndpointBasic(@RequestBody SharePostPageModel sharePostPageModel) throws InterruptedException {
         return sharePostService.sharePostPage(sharePostPageModel);
+    }
+
+    @PostMapping("/get-all-post-id")
+    public GenericResponse getAllPostId(@RequestParam("scrollNumbers") int scrollNumbers,
+                                        @RequestParam ("typeComp") String typeComp) throws InterruptedException {
+        SharePostPageModel postPageModel =new SharePostPageModel();
+        postPageModel.setTypeComp(typeComp);
+        postPageModel.setScrollNumbers(scrollNumbers);
+        return sharePostService.getAllPostId(postPageModel);
     }
 }

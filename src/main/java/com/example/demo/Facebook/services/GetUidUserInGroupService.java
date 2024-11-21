@@ -1,20 +1,12 @@
 package com.example.demo.Facebook.services;
 
-import com.example.demo.Facebook.commonFunc.configCommonFunc;
-import com.example.demo.Facebook.models.AutoCommentPostGroup;
+import com.example.demo.Facebook.commonFunc.ConfigCommonFunc;
 import com.example.demo.Facebook.models.GetUidUserInGroupModel;
 import com.example.demo.common.GenericResponse;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.sql.Driver;
-import java.time.Duration;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,7 +15,7 @@ import java.util.regex.Pattern;
 public class GetUidUserInGroupService {
 
     @Autowired
-    configCommonFunc configCommonFunc;
+    ConfigCommonFunc configCommonFunc;
 
     public GenericResponse getUidUser(GetUidUserInGroupModel getUidUserInGroupModel) throws InterruptedException {
         GenericResponse rs = new GenericResponse();
