@@ -5,7 +5,12 @@ import com.example.demo.Facebook.services.AutoPostInGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+/*
+curl --location --request POST 'localhost:8088/api/basic/auto-post?content=Content&typeComp=mac&groupId=243320756560927' \
+--header 'Authorization: Basic dXNlcjpwYXNzd29yZA==' \
+--header 'Cookie: JSESSIONID=36E0FAC6F719CF0C697DD7F33D307A92' \
+--data ''
+ */
 @RestController
 @RequestMapping("/api/basic")
 public class AutoPostInGroupController {

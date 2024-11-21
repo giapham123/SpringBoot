@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/*
+curl --location --request POST 'localhost:8088/api/basic/auto-comment-post?content=&typeComp=mac&groupId=656961338072129'
+ */
+
 @RestController
 @RequestMapping("/api/basic")
 public class AutoCommentPostInGroupController {

@@ -17,7 +17,20 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+curl --location 'localhost:8088/api/basic/share-post-page' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic dXNlcjpwYXNzd29yZA==' \
+--header 'Cookie: JSESSIONID=36E0FAC6F719CF0C697DD7F33D307A92' \
+--data '{
+    "idPost":"1060172706116308",
+    "pageName":"gp.farm47",
+    "typeComp":"mac",
+    "groupName":[
+    "Tôi là dân Sài Gòn TP.Hồ Chí Minh"
+    ]
+}'
+ */
 @RestController
 @RequestMapping("/api/basic")
 public class AutoSharePostPageController {

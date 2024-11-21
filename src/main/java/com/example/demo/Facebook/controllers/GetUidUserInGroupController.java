@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+/*
+curl --location --request POST 'localhost:8088/api/basic/get-uid-user?typeComp=mac&groupId=656961338072129&scrollNumbers=2' \
+--header 'Authorization: Basic dXNlcjpwYXNzd29yZA==' \
+--header 'Cookie: JSESSIONID=BBA3BE6B128DA3907CA7C651B4751629'
+ */
 @RestController
 @RequestMapping("/api/basic")
 public class GetUidUserInGroupController {
