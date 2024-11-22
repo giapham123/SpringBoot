@@ -73,70 +73,6 @@ public class SharePostService {
     }
 
     public ResponseEntity<String> sharePostPage(SharePostPageModel sharePostPageModel){
-
-//        if(sharePostPageModel.getTypeComp().toUpperCase().equals("MAC")){
-//            System.setProperty("webdriver.chrome.driver", "/Users/giapham/Documents/chromedriver-mac-x64/chromedriver");
-//        }else{
-//            System.setProperty("webdriver.chrome.driver", "C:\\Users\\Admin\\Downloads\\chromedriver-win64\\chromedriver.exe");
-//        }
-//        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--disable-notifications");
-//        options.setExperimentalOption("detach", false);
-//
-//        WebDriver driver = new ChromeDriver(options);
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-//
-//        // Add cookies for login
-//        driver.get("https://www.facebook.com");
-//        List<Cookie> cookies = new ArrayList<>();
-//        cookies.add(new Cookie("c_user", "61568239606429"));//1
-//        cookies.add(new Cookie("datr", "mwg0Z9THOO1-yWEpQbBW07Sx"));//2
-//        cookies.add(new Cookie("i_user", "100066835222220"));//pageId 100066835222220=page op lung dien thoai
-//        cookies.add(new Cookie("locale", "en_US"));
-//        cookies.add(new Cookie("ps_l", "1"));
-//        cookies.add(new Cookie("ps_n", "1"));
-//        cookies.add(new Cookie("sb", "mwg0Z16z_I75ZUIAXFwsTihu"));//4
-//        cookies.add(new Cookie("wd", "1440x368"));
-//        cookies.add(new Cookie("fr", "1K0gQHZbuaUpoSS03.AWV5LR_JDEgmfee-hSvtEMAEXEw.BnPZyS..AAA.0.0.BnPe1j.AWXlZtq1FII"));//3
-//        cookies.add(new Cookie("xs", "5%3AVnGxBiq6gMxsbA%3A2%3A1732240063%3A-1%3A7580"));
-//
-//        // Add necessary cookies here
-//        for (Cookie cookie : cookies) {
-//            driver.manage().addCookie(cookie);
-//        }
-
-        // Navigate to the post page after adding cookies
-//        driver.navigate().to("https://www.facebook.com/tuvanphapluat.hp/posts/122206677680064417");
-
-//        groupName.add("LUẬT SƯ VIỆT NAM");
-//        groupName.add("Luật sư tư vấn miễn phí");
-//        groupName.add("Luật sư Tư vấn Pháp luật 247");
-//        groupName.add("Học Luật Đừng Học Đại");
-//        groupName.add("Cùng Hiểu Luật");
-//        groupName.add("Việc làm Nghề Luật - Tư vấn Pháp Luật - HLU");
-//        groupName.add("Hội những người thích Học Luật ☑\uFE0F");
-//        groupName.add("NGHỀ LUẬT VÀ VIỆC LÀM");
-//        groupName.add("CỘNG ĐỒNG SINH VIÊN LUẬT");
-//        groupName.add("SINH VIÊN NGÀNH LUẬT");
-//        groupName.add("Học Luật");
-//        groupName.add("Diễn đàn luật sư LOF");
-//        groupName.add("CHUYỆN NGHỀ LUẬT SƯ");
-//        groupName.add("Luật sư tư vấn Pháp luật miễn phí");
-//        groupName.add("TÔI HỌC LUẬT - ULAW");
-//        groupName.add("LUẬT SƯ TƯ VẤN PHÁP LUẬT MIỄN PHÍ TẠI THÀNH PHỐ HỒ CHÍ MINH");
-//        groupName.add("Luật Sư tư vấn Doanh Nghiệp, Hộ Kinh doanh, Thuế, Giấy phép con miễn phí");
-//        groupName.add("Tư vấn ly hôn miễn phí toàn quốc");
-//        groupName.add("LUẬT SƯ TƯ VẤN LY HÔN MIỄN PHÍ (Thuận tình, Đơn phương, Yếu tố nước ngoài)");
-//        groupName.add("Tư vấn luật miễn phí từ luật sư giỏi");
-//        groupName.add("LUẬT SƯ HÌNH SỰ - TƯ VẤN MIỄN PHÍ");
-//        groupName.add("DIỄN ĐÀN NHỮNG NGƯỜI HÀNH NGHỀ LUẬT");
-//        groupName.add("Ở đây có Luật sư - Tư vấn pháp luật");
-//        groupName.add("NGHIỆN LUẬT");
-//        groupName.add("Luật Sư Tư Vấn Luật Miễn Phí-Luật Sư Tư Vấn Luật Miễn Phí");
-//        groupName.add("Cộng đồng hỗ trợ tư vấn pháp luật miễn phí (Thuế, Đất đai, Doanh nghiệp...)");
-//        groupName.add("CỘng ĐỒng Tư Vấn Pháp Luật");
-//        groupName.add("Luật Sư Tư Vấn Pháp Luật Miễn Phí Online");
-//        groupName.add("Báo Pháp Luật");
         WebDriver driver = configCommonFunc.loginByCookie(sharePostPageModel.getTypeComp());
         driver.navigate().to("https://www.facebook.com/"+sharePostPageModel.getPageName()+"/posts/"+sharePostPageModel.getIdPost());
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
@@ -175,11 +111,13 @@ public class SharePostService {
                     clickSelectGroup.click();
                 }
                 catch(Exception e){
-                    System.out.println("Dont have this group: "+ sharePostPageModel.getGroupName());
-                    continue;
+                    WebElement clickSelectGroup = wait.until(
+                            ExpectedConditions.presenceOfElementLocated(By.xpath("//div[2]/div/div/i"))
+                    );
+                    clickSelectGroup.click();
                 }
                 //Click post
-                WebElement clickPost = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[3]/div[3]/div/div/div")));
+                WebElement clickPost = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@aria-label='Post']")));
                 clickPost.click();
 
                 // Pause for a few seconds to ensure the post completes
@@ -189,7 +127,7 @@ public class SharePostService {
             System.out.println("An error occurred: " + e.getMessage());
             e.printStackTrace();
         } finally {
-//            driver.quit();
+            driver.quit();
         }
 
         return ResponseEntity.ok("Basic Auth API accessed!");
