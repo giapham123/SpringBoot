@@ -36,7 +36,7 @@ public class ConfigCommonFunc {
 
         cookies.add(new Cookie("c_user", "61568239606429"));//1
         cookies.add(new Cookie("datr", "mwg0Z9THOO1-yWEpQbBW07Sx"));//2
-        cookies.add(new Cookie("i_user", "100066835222220"));//pageId 100066835222220=page op lung dien thoai
+        cookies.add(new Cookie("i_user", "100063707646753"));//pageId 100066835222220=page op lung dien thoai
         cookies.add(new Cookie("locale", "en_US"));
         cookies.add(new Cookie("ps_l", "1"));
         cookies.add(new Cookie("ps_n", "1"));

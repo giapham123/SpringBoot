@@ -25,8 +25,10 @@ public class GetAllGroupNameInPageService {
         configCommonFunc.scrollTopToEndPage(getUidUserInGroupModel.getScrollNumbers(),driver);
         try {
 
-            List<WebElement> links = driver.findElements(By.xpath("//a[starts-with(@href, 'https://web.facebook.com/groups/')]"));
+            List<WebElement> links = driver.findElements(By.xpath("//a[contains(@href, 'facebook.com/groups/')]"));
             Set<String> uniqueNumbers = new HashSet<>();
+            Set<String> uniqueGroupNameNoId = new HashSet<>();
+
 
             // In nội dung văn bản của từng thẻ <a>
             for (WebElement link : links) {
@@ -40,6 +42,7 @@ public class GetAllGroupNameInPageService {
                 }
                 if(!text.split("\n")[0].isEmpty() && !text.split("\n")[0].equals("View group")){
                     uniqueNumbers.add(text.split("\n")[0] + ":" +groupid);
+                    uniqueGroupNameNoId.add(text.split("\n")[0]);
                     System.out.println("Text: " + href);
                 }
 
@@ -50,8 +53,9 @@ public class GetAllGroupNameInPageService {
 
             //Set data for return
             Map resultData = new HashMap();
-            resultData.put("totalUser", uniqueNumbers.size());
-            resultData.put("dataUid", uniqueNumbers);
+            resultData.put("totalGroupName", uniqueNumbers.size());
+            resultData.put("totalGroupNameAndId", uniqueNumbers);
+            resultData.put("totalGroupName", uniqueGroupNameNoId);
             rs.setData(resultData);
             rs.setMessage("Get All Group In Page Success");
             driver.quit();
