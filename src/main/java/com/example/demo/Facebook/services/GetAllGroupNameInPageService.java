@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class GetAllGroupNameInPageService {
@@ -22,15 +24,28 @@ public class GetAllGroupNameInPageService {
         driver.navigate().to("https://web.facebook.com/groups/joins/?nav_source=tab");
         configCommonFunc.scrollTopToEndPage(getUidUserInGroupModel.getScrollNumbers(),driver);
         try {
+
             List<WebElement> links = driver.findElements(By.xpath("//a[starts-with(@href, 'https://web.facebook.com/groups/')]"));
             Set<String> uniqueNumbers = new HashSet<>();
 
             // In nội dung văn bản của từng thẻ <a>
             for (WebElement link : links) {
+                String href = link.getAttribute("href");
                 String text = link.getText(); // Lấy nội dung văn bản
-                uniqueNumbers.add(text.split("\n")[0]);
-                System.out.println("Text: " + text);
+                Pattern pattern = Pattern.compile("\\d+");
+                Matcher matcher = pattern.matcher(href);
+                String groupid = "";
+                while (matcher.find()) {
+                    groupid = matcher.group();
+                }
+                if(!text.split("\n")[0].isEmpty() && !text.split("\n")[0].equals("View group")){
+                    uniqueNumbers.add(text.split("\n")[0] + ":" +groupid);
+                    System.out.println("Text: " + href);
+                }
+
             }
+
+
             System.out.println("Total groups in page: " + uniqueNumbers.size());
 
             //Set data for return
