@@ -60,7 +60,7 @@ public class ConfigCommonFunc {
             js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
             // Chờ một lúc để kiểm tra
             Thread.sleep(2000);
-            System.out.println("Đã cuộn xuống cuối trang.");
+//            System.out.println("Đã cuộn xuống cuối trang.");
         }
     }
 }
