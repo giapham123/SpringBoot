@@ -4,12 +4,10 @@ import com.example.demo.Facebook.commonFunc.ConfigCommonFunc;
 import com.example.demo.Facebook.models.GetUidUserInGroupModel;
 import com.example.demo.Facebook.models.SharePostPageModel;
 import com.example.demo.common.GenericResponse;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,27 +88,16 @@ public class SharePostService {
         // Add cookies for login
         driver.get("https://www.facebook.com");
         List<Cookie> cookies = new ArrayList<>();
-//        cookies.add(new Cookie("b_user", "61560391100126"));
-//        cookies.add(new Cookie("c_user", "100007769235838"));
-//        cookies.add(new Cookie("datr", "U75EZr-96XGfZQxL1SfKqCYg"));
-//        cookies.add(new Cookie("fr", "19iXxFLGIGy6rFS4n.AWVnnE0jjG7xGNiQZLcoqULdjWs.BnM0mu..AAA.0.0.BnM1LE.AWXswWiNdXQ"));
-//        cookies.add(new Cookie("i_user", "61551932516721"));
-//        cookies.add(new Cookie("locale", "en_US"));
-//        cookies.add(new Cookie("ps_l", "1"));
-//        cookies.add(new Cookie("ps_n", "1"));
-//        cookies.add(new Cookie("sb", "JmIpZG_pK3duwRSUYwZA-Mwa"));
-//        cookies.add(new Cookie("wd", "906x983"));
-//        cookies.add(new Cookie("xs", "33%3A7BAMKsuAgazkTA%3A2%3A1717076724%3A-1%3A6191%3ACrRmDO5Ou4vwHA%3AAcVbaDQhIKglET53RN6j-0t7Eg6xpJnYtqODor0EAkKG"));
         cookies.add(new Cookie("c_user", "61568239606429"));//1
         cookies.add(new Cookie("datr", "mwg0Z9THOO1-yWEpQbBW07Sx"));//2
-        cookies.add(new Cookie("fr", "1ktrjz4zWqnLmuIwd.AWUctX-3saXXxC7hiXbdwGuLA6Y.BnNZa3..AAA.0.0.BnNZa3.AWWkQALbtFw"));//3
-        cookies.add(new Cookie("i_user", "100063707646753"));
+        cookies.add(new Cookie("i_user", "100066835222220"));//pageId 100066835222220=page op lung dien thoai
         cookies.add(new Cookie("locale", "en_US"));
         cookies.add(new Cookie("ps_l", "1"));
         cookies.add(new Cookie("ps_n", "1"));
         cookies.add(new Cookie("sb", "mwg0Z16z_I75ZUIAXFwsTihu"));//4
-        cookies.add(new Cookie("wd", "906x983"));
-        cookies.add(new Cookie("xs", "11%3AWe5fJeHEAhBxyg%3A2%3A1731463337%3A-1%3A-1%3A%3AAcU1hF7Rm55ZFTJJNCUbVv9eHnK1MfKUNutjfw5XNA"));
+        cookies.add(new Cookie("wd", "1440x368"));
+        cookies.add(new Cookie("fr", "1K0gQHZbuaUpoSS03.AWV5LR_JDEgmfee-hSvtEMAEXEw.BnPZyS..AAA.0.0.BnPe1j.AWXlZtq1FII"));//3
+        cookies.add(new Cookie("xs", "5%3AVnGxBiq6gMxsbA%3A2%3A1732240063%3A-1%3A7580"));
 
         // Add necessary cookies here
         for (Cookie cookie : cookies) {
@@ -153,8 +140,18 @@ public class SharePostService {
             for (String group : sharePostPageModel.getGroupName()) {
                 System.out.println("Group Name: " + group);
                 //Click share at post
-                WebElement clickShare = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[3]/div/div/div[2]/span/span")));
-                clickShare.click();
+                try{
+                    // Chờ popup hiển thị
+                    WebElement popup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div[role='dialog']")));
+                    // Click nút Share trong popup
+                    WebElement popupShareButton = popup.findElement(By.cssSelector("span[data-ad-rendering-role='share_button']"));
+                    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", popupShareButton);
+                    System.out.println("Đã click Share trong popup thành công!");
+                }catch (Exception e){
+                    WebElement clickShare = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[3]/div/div/div[2]/span/span")));
+                    clickShare.click();
+                }
+
                 //Click group at popup share
                 WebElement clickGroup = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[4]/div/div/div/div/div/i")));
                 clickGroup.click();
@@ -187,7 +184,7 @@ public class SharePostService {
             System.out.println("An error occurred: " + e.getMessage());
             e.printStackTrace();
         } finally {
-            driver.quit();
+//            driver.quit();
         }
 
         return ResponseEntity.ok("Basic Auth API accessed!");
