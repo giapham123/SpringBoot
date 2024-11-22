@@ -28,7 +28,7 @@ public class SharePostService {
     public GenericResponse getAllPostId(SharePostPageModel sharePostPageModel) throws InterruptedException {
         GenericResponse rs = new GenericResponse();
         WebDriver driver = configCommonFunc.loginByCookie(sharePostPageModel.getTypeComp());
-        driver.navigate().to("https://web.facebook.com/gpcarnews/");
+        driver.navigate().to("https://web.facebook.com/"+sharePostPageModel.getPageName());
         configCommonFunc.scrollTopToEndPage(sharePostPageModel.getScrollNumbers(),driver);
         try {
             List<WebElement> links = driver.findElements(By.xpath("//a[@aria-label='Boost post']"));

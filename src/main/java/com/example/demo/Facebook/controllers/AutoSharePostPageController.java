@@ -46,10 +46,12 @@ public class AutoSharePostPageController {
 
     @PostMapping("/get-all-post-id")
     public GenericResponse getAllPostId(@RequestParam("scrollNumbers") int scrollNumbers,
+                                        @RequestParam("pageName") String pageName,
                                         @RequestParam ("typeComp") String typeComp) throws InterruptedException {
         SharePostPageModel postPageModel =new SharePostPageModel();
         postPageModel.setTypeComp(typeComp);
         postPageModel.setScrollNumbers(scrollNumbers);
+        postPageModel.setPageName(pageName);
         return sharePostService.getAllPostId(postPageModel);
     }
 }
