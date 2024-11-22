@@ -30,8 +30,6 @@ public class ConfigCommonFunc {
         options.addArguments("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36");
 
         WebDriver driver = new ChromeDriver(options);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-
         // Add cookies for login
         driver.get("https://www.facebook.com");
         List<Cookie> cookies = new ArrayList<>();
@@ -45,7 +43,7 @@ public class ConfigCommonFunc {
         cookies.add(new Cookie("sb", "mwg0Z16z_I75ZUIAXFwsTihu"));//4
         cookies.add(new Cookie("wd", "872x75"));
         cookies.add(new Cookie("fr", "1K0gQHZbuaUpoSS03.AWV5LR_JDEgmfee-hSvtEMAEXEw.BnPZyS..AAA.0.0.BnPe1j.AWXlZtq1FII"));//3
-        cookies.add(new Cookie("xs", "34%3A4bgvH5iP6QEpgQ%3A2%3A1732172238%3A-1%3A-1"));
+        cookies.add(new Cookie("xs", "5%3AVnGxBiq6gMxsbA%3A2%3A1732240063%3A-1%3A7580"));
 
         // Add necessary cookies here
         for (Cookie cookie : cookies) {

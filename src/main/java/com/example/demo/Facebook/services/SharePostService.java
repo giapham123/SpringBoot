@@ -73,40 +73,41 @@ public class SharePostService {
     }
 
     public ResponseEntity<String> sharePostPage(SharePostPageModel sharePostPageModel){
-        if(sharePostPageModel.getTypeComp().toUpperCase().equals("MAC")){
-            System.setProperty("webdriver.chrome.driver", "/Users/giapham/Documents/chromedriver-mac-x64/chromedriver");
-        }else{
-            System.setProperty("webdriver.chrome.driver", "C:\\Users\\Admin\\Downloads\\chromedriver-win64\\chromedriver.exe");
-        }
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--disable-notifications");
-        options.setExperimentalOption("detach", false);
 
-        WebDriver driver = new ChromeDriver(options);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-
-        // Add cookies for login
-        driver.get("https://www.facebook.com");
-        List<Cookie> cookies = new ArrayList<>();
-        cookies.add(new Cookie("c_user", "61568239606429"));//1
-        cookies.add(new Cookie("datr", "mwg0Z9THOO1-yWEpQbBW07Sx"));//2
-        cookies.add(new Cookie("i_user", "100066835222220"));//pageId 100066835222220=page op lung dien thoai
-        cookies.add(new Cookie("locale", "en_US"));
-        cookies.add(new Cookie("ps_l", "1"));
-        cookies.add(new Cookie("ps_n", "1"));
-        cookies.add(new Cookie("sb", "mwg0Z16z_I75ZUIAXFwsTihu"));//4
-        cookies.add(new Cookie("wd", "1440x368"));
-        cookies.add(new Cookie("fr", "1K0gQHZbuaUpoSS03.AWV5LR_JDEgmfee-hSvtEMAEXEw.BnPZyS..AAA.0.0.BnPe1j.AWXlZtq1FII"));//3
-        cookies.add(new Cookie("xs", "5%3AVnGxBiq6gMxsbA%3A2%3A1732240063%3A-1%3A7580"));
-
-        // Add necessary cookies here
-        for (Cookie cookie : cookies) {
-            driver.manage().addCookie(cookie);
-        }
+//        if(sharePostPageModel.getTypeComp().toUpperCase().equals("MAC")){
+//            System.setProperty("webdriver.chrome.driver", "/Users/giapham/Documents/chromedriver-mac-x64/chromedriver");
+//        }else{
+//            System.setProperty("webdriver.chrome.driver", "C:\\Users\\Admin\\Downloads\\chromedriver-win64\\chromedriver.exe");
+//        }
+//        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--disable-notifications");
+//        options.setExperimentalOption("detach", false);
+//
+//        WebDriver driver = new ChromeDriver(options);
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+//
+//        // Add cookies for login
+//        driver.get("https://www.facebook.com");
+//        List<Cookie> cookies = new ArrayList<>();
+//        cookies.add(new Cookie("c_user", "61568239606429"));//1
+//        cookies.add(new Cookie("datr", "mwg0Z9THOO1-yWEpQbBW07Sx"));//2
+//        cookies.add(new Cookie("i_user", "100066835222220"));//pageId 100066835222220=page op lung dien thoai
+//        cookies.add(new Cookie("locale", "en_US"));
+//        cookies.add(new Cookie("ps_l", "1"));
+//        cookies.add(new Cookie("ps_n", "1"));
+//        cookies.add(new Cookie("sb", "mwg0Z16z_I75ZUIAXFwsTihu"));//4
+//        cookies.add(new Cookie("wd", "1440x368"));
+//        cookies.add(new Cookie("fr", "1K0gQHZbuaUpoSS03.AWV5LR_JDEgmfee-hSvtEMAEXEw.BnPZyS..AAA.0.0.BnPe1j.AWXlZtq1FII"));//3
+//        cookies.add(new Cookie("xs", "5%3AVnGxBiq6gMxsbA%3A2%3A1732240063%3A-1%3A7580"));
+//
+//        // Add necessary cookies here
+//        for (Cookie cookie : cookies) {
+//            driver.manage().addCookie(cookie);
+//        }
 
         // Navigate to the post page after adding cookies
 //        driver.navigate().to("https://www.facebook.com/tuvanphapluat.hp/posts/122206677680064417");
-        driver.navigate().to("https://www.facebook.com/"+sharePostPageModel.getPageName()+"/posts/"+sharePostPageModel.getIdPost());
+
 //        groupName.add("LUẬT SƯ VIỆT NAM");
 //        groupName.add("Luật sư tư vấn miễn phí");
 //        groupName.add("Luật sư Tư vấn Pháp luật 247");
@@ -136,6 +137,10 @@ public class SharePostService {
 //        groupName.add("CỘng ĐỒng Tư Vấn Pháp Luật");
 //        groupName.add("Luật Sư Tư Vấn Pháp Luật Miễn Phí Online");
 //        groupName.add("Báo Pháp Luật");
+        WebDriver driver = configCommonFunc.loginByCookie(sharePostPageModel.getTypeComp());
+        driver.navigate().to("https://www.facebook.com/"+sharePostPageModel.getPageName()+"/posts/"+sharePostPageModel.getIdPost());
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+
         try {
             for (String group : sharePostPageModel.getGroupName()) {
                 System.out.println("Group Name: " + group);
