@@ -71,8 +71,6 @@ public class AutoCommentPostInGroupService {
 
             // Chờ một lúc để kiểm tra
             Thread.sleep(2000);
-
-            System.out.println("Đã cuộn xuống cuối trang.");
         }
         // Lấy tất cả các thẻ <a>
         List<WebElement> links = driver.findElements(By.tagName("a"));
