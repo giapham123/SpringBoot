@@ -157,9 +157,24 @@ public class BasicAuthController {
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
             options.addArguments("--remote-debugging-port=9222");
+
+            options.addArguments("--disable-blink-features=AutomationControlled");  // Tắt chế độ tự động hóa
+            options.addArguments("--disable-infobars");  // Tắt thông báo "Chrome is being controlled by automated software"
+//            options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});  // Tắt thông báo tự động hóa
+            options.setExperimentalOption("useAutomationExtension", false);  // Tắt Selenium extension
             // Start Chrome with the specified profile
             ChromeDriver driver = new ChromeDriver(options);
-            driver.get("https://chatgpt.com/");
+
+            // Mở trang Facebook
+            driver.get("https://github.com/");
+
+            // Sử dụng JavaScriptExecutor để tắt navigator.webdriver
+            JavascriptExecutor js3 = (JavascriptExecutor) driver;
+            js3.executeScript("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})");
+
+            JavascriptExecutor js2 = (JavascriptExecutor) driver;
+            js2.executeScript("window.open('https://chatgpt.com', '_blank');");
+//            driver.get("https://chatgpt.com/");
             // Open a new tab using JavaScript
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("window.open('https://github.com/', '_blank');");
