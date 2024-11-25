@@ -162,7 +162,10 @@ public class BasicAuthController {
             driver.get("https://chatgpt.com/");
             // Open a new tab using JavaScript
             JavascriptExecutor js = (JavascriptExecutor) driver;
-            js.executeScript("window.open('https://www.example.com', '_blank');");
+            js.executeScript("window.open('https://github.com/', '_blank');");
+
+            JavascriptExecutor js1 = (JavascriptExecutor) driver;
+            js1.executeScript("window.open('https://gitlab.mafc.vn/', '_blank');");
 
             String originalTab = driver.getWindowHandle();
             for (String handle : driver.getWindowHandles()) {
@@ -172,16 +175,16 @@ public class BasicAuthController {
                 }
             }
 
-            driver.get("https://github.com/");
-            if( checkLinkStatus("https://aaaaaaaaaaaaaaaaaaaaaaaaaaaa.com/")){
-                driver.navigate().to("https://aaaaaaaaaaaaaaaaaaaaaaaaaaaa.com/");
-                String a = driver.getPageSource();
-                return new ResponseEntity<>(a, HttpStatus.OK);
-            }else{
-                driver.navigate().to("https://github.com/");
-                String a = driver.getPageSource();
-                return new ResponseEntity<>(a,HttpStatus.OK);
-            }
+//            driver.get("https://github.com/");
+//            if( checkLinkStatus("https://aaaaaaaaaaaaaaaaaaaaaaaaaaaa.com/")){
+//                driver.navigate().to("https://aaaaaaaaaaaaaaaaaaaaaaaaaaaa.com/");
+//                String a = driver.getPageSource();
+//                return new ResponseEntity<>(a, HttpStatus.OK);
+//            }else{
+//                driver.navigate().to("https://github.com/");
+//                String a = driver.getPageSource();
+//                return new ResponseEntity<>(a,HttpStatus.OK);
+//            }
 
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
