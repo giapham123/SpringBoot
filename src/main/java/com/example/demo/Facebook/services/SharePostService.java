@@ -111,10 +111,15 @@ public class SharePostService {
                     clickSelectGroup.click();
                 }
                 catch(Exception e){
-                    WebElement clickSelectGroup = wait.until(
-                            ExpectedConditions.presenceOfElementLocated(By.xpath("//div[2]/div/div/i"))
-                    );
-                    clickSelectGroup.click();
+                    try {
+                        WebElement clickSelectGroup = wait.until(
+                                ExpectedConditions.presenceOfElementLocated(By.xpath("//div[2]/div/div/i"))
+                        );
+                        clickSelectGroup.click();
+                    }catch (Exception c){
+                        driver.navigate().to("https://www.facebook.com/"+sharePostPageModel.getPageName()+"/posts/"+sharePostPageModel.getIdPost());
+                        continue;
+                    }
                 }
                 //Click post
                 WebElement clickPost = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@aria-label='Post']")));

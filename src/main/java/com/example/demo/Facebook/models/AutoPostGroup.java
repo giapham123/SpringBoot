@@ -1,9 +1,21 @@
 package com.example.demo.Facebook.models;
 
+import java.io.File;
+
 public class AutoPostGroup {
     private String typeComp;
     private String content;
     private String groupId;
+
+    private File image;
+
+    public File getImage() {
+        return image;
+    }
+
+    public void setImage(File image) {
+        this.image = image;
+    }
 
     public String getContent() {
         return content;

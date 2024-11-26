@@ -1,19 +1,19 @@
 package com.example.demo.Facebook.services;
 
 import com.example.demo.Facebook.commonFunc.ConfigCommonFunc;
+import com.example.demo.Facebook.commonFunc.ConfigCommonFuncForRobotChooseFile;
 import com.example.demo.Facebook.models.AutoPostGroup;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class AutoPostInGroupService {
@@ -21,81 +21,182 @@ public class AutoPostInGroupService {
     @Autowired
     ConfigCommonFunc configCommonFunc;
 
+    @Autowired
+    ConfigCommonFuncForRobotChooseFile configCommonFuncForRobotChooseFile;
+
     public ResponseEntity<String> autoCommentPost(AutoPostGroup autoPostGroup) throws InterruptedException {
-//        if(autoPostGroup.getTypeComp().toUpperCase().equals("MAC")){
-//            System.setProperty("webdriver.chrome.driver", "/Users/giapham/Documents/chromedriver-mac-x64/chromedriver");
-//        }else{
-//            System.setProperty("webdriver.chrome.driver", "C:\\Users\\Admin\\Downloads\\chromedriver-win64\\chromedriver.exe");
-//        }
-//        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--disable-notifications");
-//        options.setExperimentalOption("detach", false);
-//        options.addArguments("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36");
-//
-//        WebDriver driver = new ChromeDriver(options);
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-//
-//        // Add cookies for login
-//        driver.get("https://www.facebook.com");
-//        List<Cookie> cookies = new ArrayList<>();
-//
-//        cookies.add(new Cookie("c_user", "61568239606429"));//1
-//        cookies.add(new Cookie("datr", "mwg0Z9THOO1-yWEpQbBW07Sx"));//2
-//        cookies.add(new Cookie("i_user", "100066835222220"));
-//        cookies.add(new Cookie("locale", "en_US"));
-//        cookies.add(new Cookie("ps_l", "1"));
-//        cookies.add(new Cookie("ps_n", "1"));
-//        cookies.add(new Cookie("sb", "mwg0Z16z_I75ZUIAXFwsTihu"));//4
-//        cookies.add(new Cookie("wd", "872x75"));
-//        cookies.add(new Cookie("fr", "11iZMNBDaCFFhGkbk.AWVzh9MCkJ2tlqbhvEhgFumKjE0.BnPWQZ..AAA.0.0.BnPZG3.AWXdi5ZHMLk"));//3
-//        cookies.add(new Cookie("xs", "11%3AWe5fJeHEAhBxyg%3A2%3A1731463337%3A-1%3A-1%3A%3AAcXGLjzU8I-4z_bOtDFNlTvRBaSJadBy_8UAZCUabTk"));
-//
-//        // Add necessary cookies here
-//        for (Cookie cookie : cookies) {
-//            driver.manage().addCookie(cookie);
-//        }
-        WebDriver driver = configCommonFunc.loginByCookie(autoPostGroup.getTypeComp());
+
+        WebDriver driver = configCommonFuncForRobotChooseFile.loginByCookie(autoPostGroup.getTypeComp());
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         // Navigate to the post page after adding cookies
-        driver.navigate().to("https://facebook.com/groups/"+ autoPostGroup.getGroupId());
+        driver.navigate().to("https://facebook.com/groups/" + autoPostGroup.getGroupId());
 
         WebElement clickShare = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(.,'Write something...')]")));
         clickShare.click();
-        Thread.sleep(2000); // Đợi hộp mở ra
+        Thread.sleep(1000); // Đợi hộp mở ra
         try {
-            //không thể import image vì phải luu image trước nên khong the sd hàm duưới
-//            WebElement clickShare1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@aria-label='Photo/video']")));
-//            clickShare1.click();
-//            Thread.sleep(5000); // Chờ ảnh tải lên
-//            try {
-//                WebElement uploadInput = driver.findElement(By.xpath("//input[@type='file']"));
-//                uploadInput.sendKeys("/Users/giapham/Downloads/bbb.jpeg");
-//                Thread.sleep(5000); // Chờ ảnh tải lên
-//            }catch (Exception e){
-//                WebElement clickShare1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@aria-label='Photo/video']")));
-//                clickShare1.click();
-//                Thread.sleep(5000); // Chờ ảnh tải lên
-//
-//                WebElement uploadInput = driver.findElement(By.xpath("//input[@type='file']"));
-//                uploadInput.sendKeys("/Users/giapham/Downloads/bbb.jpeg");
-//                Thread.sleep(5000); // Chờ ảnh tải lên
-//                System.out.println("cccccc"+e);
-//            }
+            WebElement clickShare1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@aria-label='Photo/video']")));
+            clickShare1.click();
+            WebElement clickShare2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(.,'Add Photos/Videos')]")));
+            clickShare2.click();
+            Thread.sleep(500);
+            if (autoPostGroup.getTypeComp().toUpperCase().equals("MAC")) {
+                selectFileInMac(autoPostGroup.getImage().getPath());
+            } else {
+                selectFileForWinDown(autoPostGroup.getImage().getPath());
+            }
             //Input Content
             WebElement postBox = driver.findElement(By.xpath("//div[@aria-label='Create a public post…']"));
             postBox.sendKeys(autoPostGroup.getContent());
-            Thread.sleep(5000); // Wait for the next set of groups to load
+            Thread.sleep(1000); // Wait for the next set of groups to load
 
             //Click Post Button
-            WebElement clickPost = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@aria-label='Post']")));
-            clickPost.click();
+//            WebElement clickPost = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@aria-label='Post']")));
+//            clickPost.click();
             Thread.sleep(3000);
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             return ResponseEntity.ok("Post to group failed. Please check element.");
         } finally {
             driver.quit();
         }
         return ResponseEntity.ok("Post to group success.");
+    }
+
+
+    //This run for windown
+    public static void selectFileForWinDown(String filePath1) {
+        try {
+            // Create Robot instance
+            Robot robot = new Robot();
+
+            // Example file path (use a valid file path on your system)
+            String filePath = filePath1;
+
+            // Ensure the file selection popup is open and ready
+            Thread.sleep(1000); // Adjust the delay if needed
+
+            // Iterate through the file path characters
+            for (char c : filePath.toCharArray()) {
+                if (Character.isLetterOrDigit(c)) {
+                    // Handle letters and digits
+                    int keyCode = KeyEvent.getExtendedKeyCodeForChar(Character.toUpperCase(c));
+                    if (Character.isLowerCase(c)) {
+                        robot.keyPress(KeyEvent.VK_SHIFT);
+                    }
+                    robot.keyPress(keyCode);
+                    robot.keyRelease(keyCode);
+                    if (Character.isLowerCase(c)) {
+                        robot.keyRelease(KeyEvent.VK_SHIFT);
+                    }
+                } else {
+                    // Handle special characters explicitly
+                    switch (c) {
+                        case ':':
+                            robot.keyPress(KeyEvent.VK_SHIFT);
+                            robot.keyPress(KeyEvent.VK_SEMICOLON);
+                            robot.keyRelease(KeyEvent.VK_SEMICOLON);
+                            robot.keyRelease(KeyEvent.VK_SHIFT);
+                            break;
+                        case '\\':
+                            robot.keyPress(KeyEvent.VK_BACK_SLASH);
+                            robot.keyRelease(KeyEvent.VK_BACK_SLASH);
+                            break;
+                        case '/':
+                            robot.keyPress(KeyEvent.VK_SLASH);
+                            robot.keyRelease(KeyEvent.VK_SLASH);
+                            break;
+                        case '.':
+                            robot.keyPress(KeyEvent.VK_PERIOD);
+                            robot.keyRelease(KeyEvent.VK_PERIOD);
+                            break;
+                        case '_':
+                            robot.keyPress(KeyEvent.VK_SHIFT);
+                            robot.keyPress(KeyEvent.VK_MINUS); // Underscore is Shift + Minus
+                            robot.keyRelease(KeyEvent.VK_MINUS);
+                            robot.keyRelease(KeyEvent.VK_SHIFT);
+                            break;
+                        case '-':
+                            robot.keyPress(KeyEvent.VK_MINUS);
+                            robot.keyRelease(KeyEvent.VK_MINUS);
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Unsupported character: " + c);
+                    }
+                }
+
+                // Small delay between key presses
+                Thread.sleep(100);
+            }
+
+            // Press Enter to confirm the file selection
+            robot.keyPress(KeyEvent.VK_ENTER);
+            robot.keyRelease(KeyEvent.VK_ENTER);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void selectFileInMac(String filePath1) {
+        try {
+            // Create Robot instance
+            Robot robot = new Robot();
+
+            // Example file path (adjust this path for testing)
+            String filePath = filePath1;  // Adjust path for your case
+
+            // Check if the OS is macOS or Windows
+            boolean isMac = System.getProperty("os.name").toLowerCase().contains("mac");
+
+            // Type the file path character by character
+            Thread.sleep(5000);  // Giving time for the application to focus
+
+            // Type each character of the file path
+            for (char c : filePath.toCharArray()) {
+                int keyCode = KeyEvent.getExtendedKeyCodeForChar(c);
+
+                // Handle special characters for macOS (like '/', ':', etc.)
+                if (keyCode == KeyEvent.VK_SLASH) {
+                    robot.keyPress(KeyEvent.VK_SLASH);
+                    robot.keyRelease(KeyEvent.VK_SLASH);
+                } else if (keyCode == KeyEvent.VK_COLON) {
+                    // On macOS, ':' is Shift + ';'
+                    robot.keyPress(KeyEvent.VK_SHIFT);
+                    robot.keyPress(KeyEvent.VK_SEMICOLON);
+                    robot.keyRelease(KeyEvent.VK_SEMICOLON);
+                    robot.keyRelease(KeyEvent.VK_SHIFT);
+                } else if (keyCode != 0) {
+                    // Simulate the character normally
+                    robot.keyPress(keyCode);
+                    robot.keyRelease(keyCode);
+                }
+
+                // Small delay between key presses
+                Thread.sleep(100);  // Adjust the sleep time if needed for better reliability
+            }
+
+            // Focus management: Bring focus back to the file selection dialog
+            // Option 1: Simulate pressing TAB to switch focus (if applicable)
+            robot.keyPress(KeyEvent.VK_TAB);  // This cycles the focus, may need to press TAB multiple times
+            robot.keyRelease(KeyEvent.VK_TAB);
+            Thread.sleep(500);  // Small delay to ensure focus switches
+            // Now press "Enter" to select the file and close the dialog
+            System.out.println("Pressing Enter to select the file...");
+            if (isMac) {
+                // On macOS, we might need to press Return (Enter) explicitly
+                robot.keyPress(KeyEvent.VK_ENTER);  // Or KeyEvent.VK_RETURN for macOS
+                robot.keyRelease(KeyEvent.VK_ENTER); // Or KeyEvent.VK_RETURN
+            }
+
+            // Wait for the file dialog to process the selection
+            Thread.sleep(500);  // Adding a small delay after pressing Enter
+            robot.keyPress(KeyEvent.VK_ENTER);  // Or KeyEvent.VK_RETURN for macOS
+            robot.keyRelease(KeyEvent.VK_ENTER); // Or KeyEvent.VK_RETURN
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
