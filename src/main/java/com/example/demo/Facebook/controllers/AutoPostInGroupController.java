@@ -21,10 +21,6 @@ public class AutoPostInGroupController {
 
     @PostMapping("/auto-post")
     public GenericResponse autoPostGroup(@RequestBody AutoPostGroup autoPostGroup) throws InterruptedException {
-//        AutoPostGroup autoPostGroup = new AutoPostGroup();
-//        autoPostGroup.setContent(content);
-//        autoPostGroup.setGroupId(groupId);
-//        autoPostGroup.setTypeComp(typeComp);
         return autoPostInGroupService.autoCommentPost(autoPostGroup);
     }
 }

@@ -33,6 +33,8 @@ public class AutoPostInGroupService {
     ConfigCommonFuncFirefox configCommonFuncFirefox;
 
     public GenericResponse autoCommentPost(AutoPostGroup autoPostGroup) throws InterruptedException {
+        boolean isMac = System.getProperty("os.name").toLowerCase().contains("mac");
+        boolean isWindows = System.getProperty("os.name").toLowerCase().contains("win");
         GenericResponse rs = new GenericResponse();
         WebDriver driver = configCommonFuncFirefox.loginByCookie();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
@@ -51,13 +53,17 @@ public class AutoPostInGroupService {
                 WebElement clickShare1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@aria-label='Photo/video']")));
                 clickShare1.click();
 
-                if (autoPostGroup.getTypeComp().toUpperCase().equals("MAC")) {
+                if (isMac) {
                     selectFileInMac(autoPostGroup.getImage());
-                } else {
-                    WebElement clickShare2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(.,'Add Photos/Videos')]")));
-                    clickShare2.click();
-                    Thread.sleep(500);
-                    selectFileForWinDown(autoPostGroup.getImage());
+                } else if(isWindows){
+                    try{
+                        selectFileForWinDown(autoPostGroup.getImage());
+                    }catch (Exception e){
+                        WebElement clickShare2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(.,'Add Photos/Videos')]")));
+                        clickShare2.click();
+                        Thread.sleep(500);
+                        selectFileForWinDown(autoPostGroup.getImage());
+                    }
                 }
                 Thread.sleep(500);
 

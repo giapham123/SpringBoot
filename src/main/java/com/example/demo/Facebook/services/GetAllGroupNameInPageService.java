@@ -32,7 +32,7 @@ public class GetAllGroupNameInPageService {
             List<WebElement> links = driver.findElements(By.xpath("//a[contains(@href, 'facebook.com/groups/')]"));
             Set<String> uniqueNumbers = new HashSet<>();
             Set<String> uniqueGroupNameNoId = new HashSet<>();
-
+            String groupId = "";
 
             // In nội dung văn bản của từng thẻ <a>
             for (WebElement link : links) {
@@ -48,6 +48,7 @@ public class GetAllGroupNameInPageService {
                     uniqueNumbers.add(text.split("\n")[0] + ":" +groupid);
                     uniqueGroupNameNoId.add(text.split("\n")[0]);
                     System.out.println("Text: " + href);
+                    groupId += groupid +",";
                 }
 
             }
@@ -60,6 +61,7 @@ public class GetAllGroupNameInPageService {
             resultData.put("totalGroupName", uniqueNumbers.size());
             resultData.put("totalGroupNameAndId", uniqueNumbers);
             resultData.put("totalGroupName", uniqueGroupNameNoId);
+            resultData.put("groupId",groupId);
             rs.setData(resultData);
             rs.setMessage("Get All Group In Page Success");
             driver.quit();
