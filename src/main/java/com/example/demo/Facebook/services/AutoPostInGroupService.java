@@ -1,6 +1,8 @@
+
 package com.example.demo.Facebook.services;
 
 import com.example.demo.Facebook.commonFunc.ConfigCommonFunc;
+import com.example.demo.Facebook.commonFunc.ConfigCommonFuncFirefox;
 import com.example.demo.Facebook.commonFunc.ConfigCommonFuncForRobotChooseFile;
 import com.example.demo.Facebook.models.AutoPostGroup;
 import org.openqa.selenium.*;
@@ -24,42 +26,68 @@ public class AutoPostInGroupService {
     @Autowired
     ConfigCommonFuncForRobotChooseFile configCommonFuncForRobotChooseFile;
 
+    @Autowired
+    ConfigCommonFuncFirefox configCommonFuncFirefox;
+
     public ResponseEntity<String> autoCommentPost(AutoPostGroup autoPostGroup) throws InterruptedException {
 
-        WebDriver driver = configCommonFuncForRobotChooseFile.loginByCookie(autoPostGroup.getTypeComp());
+        WebDriver driver = configCommonFuncFirefox.loginByCookie(autoPostGroup.getTypeComp());
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         // Navigate to the post page after adding cookies
-        driver.navigate().to("https://facebook.com/groups/" + autoPostGroup.getGroupId());
+        String[] splitGroupId = autoPostGroup.getGroupId().split(",");
+        for(int i =0; i< splitGroupId.length; i++){
+//            driver.navigate().refresh();
+            driver.get("https://facebook.com/groups/" + splitGroupId[i]);
+            Thread.sleep(1000); // Đợi hộp mở ra
+            try {
+                WebElement clickShare = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(.,'Write something...')]")));
+                clickShare.click();
+                Thread.sleep(1000); // Đợi hộp mở ra
 
-        WebElement clickShare = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(.,'Write something...')]")));
-        clickShare.click();
-        Thread.sleep(1000); // Đợi hộp mở ra
-        try {
-            WebElement clickShare1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@aria-label='Photo/video']")));
-            clickShare1.click();
-            WebElement clickShare2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(.,'Add Photos/Videos')]")));
-            clickShare2.click();
-            Thread.sleep(500);
-            if (autoPostGroup.getTypeComp().toUpperCase().equals("MAC")) {
-                selectFileInMac(autoPostGroup.getImage().getPath());
-            } else {
-                selectFileForWinDown(autoPostGroup.getImage().getPath());
+                WebElement clickShare1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@aria-label='Photo/video']")));
+                clickShare1.click();
+
+                if (autoPostGroup.getTypeComp().toUpperCase().equals("MAC")) {
+                    selectFileInMac(autoPostGroup.getImage());
+                } else {
+                    WebElement clickShare2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(.,'Add Photos/Videos')]")));
+                    clickShare2.click();
+                    Thread.sleep(500);
+                    selectFileForWinDown(autoPostGroup.getImage());
+                }
+                Thread.sleep(500);
+
+                //Input Content
+                try{
+                    WebElement postBox = driver.findElement(By.xpath("//div[@aria-label='Create a public post…']"));
+                    String[] lines = autoPostGroup.getContent().split("\n");
+                    for (String line : lines) {
+                        postBox.sendKeys(line);
+                        postBox.sendKeys(Keys.RETURN);  // Simulate pressing "Enter" to create a new line
+                        Thread.sleep(500); // Delay to mimic human-like typing behavior
+                    }
+                }catch (Exception e){
+                    WebElement postBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@aria-label='Write something...']")));
+                    String[] lines = autoPostGroup.getContent().split("\n");
+                    for (String line : lines) {
+                        postBox.sendKeys(line);
+                        postBox.sendKeys(Keys.RETURN);  // Simulate pressing "Enter" to create a new line
+                        Thread.sleep(500); // Delay to mimic human-like typing behavior
+                    }
+                }
+                Thread.sleep(1000); // Wait for the next set of groups to load
+//                Click Post Button
+                WebElement clickPost = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@aria-label='Post']")));
+                clickPost.click();
+                Thread.sleep(1000);
+
+            } catch (Exception e) {
+                System.out.println(e);
+            }finally {
+                continue;
             }
-            //Input Content
-            WebElement postBox = driver.findElement(By.xpath("//div[@aria-label='Create a public post…']"));
-            postBox.sendKeys(autoPostGroup.getContent());
-            Thread.sleep(1000); // Wait for the next set of groups to load
-
-            //Click Post Button
-//            WebElement clickPost = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@aria-label='Post']")));
-//            clickPost.click();
-            Thread.sleep(3000);
-        } catch (Exception e) {
-            System.out.println(e);
-            return ResponseEntity.ok("Post to group failed. Please check element.");
-        } finally {
-            driver.quit();
         }
+
         return ResponseEntity.ok("Post to group success.");
     }
 
@@ -197,6 +225,5 @@ public class AutoPostInGroupService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }

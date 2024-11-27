@@ -1,6 +1,7 @@
 package com.example.demo.Facebook.services;
 
 import com.example.demo.Facebook.commonFunc.ConfigCommonFunc;
+import com.example.demo.Facebook.commonFunc.ConfigCommonFuncFirefox;
 import com.example.demo.Facebook.models.GetUidUserInGroupModel;
 import com.example.demo.common.GenericResponse;
 import org.openqa.selenium.By;
@@ -18,9 +19,12 @@ public class GetAllGroupNameInPageService {
     @Autowired
     ConfigCommonFunc configCommonFunc;
 
+    @Autowired
+    ConfigCommonFuncFirefox configCommonFuncFirefox;
+
     public GenericResponse getAllGroupNameInPage(GetUidUserInGroupModel getUidUserInGroupModel) throws InterruptedException {
         GenericResponse rs = new GenericResponse();
-        WebDriver driver = configCommonFunc.loginByCookie(getUidUserInGroupModel.getTypeComp());
+        WebDriver driver = configCommonFuncFirefox.loginByCookie(getUidUserInGroupModel.getTypeComp());
         driver.navigate().to("https://web.facebook.com/groups/joins/?nav_source=tab");
         configCommonFunc.scrollTopToEndPage(getUidUserInGroupModel.getScrollNumbers(),driver);
         try {

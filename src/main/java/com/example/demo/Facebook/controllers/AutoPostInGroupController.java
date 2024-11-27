@@ -5,9 +5,6 @@ import com.example.demo.Facebook.services.AutoPostInGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.File;
-
 /*
 curl --location --request POST 'localhost:8088/api/basic/auto-post?content=Content&typeComp=mac&groupId=243320756560927' \
 --header 'Authorization: Basic dXNlcjpwYXNzd29yZA==' \
@@ -22,16 +19,11 @@ public class AutoPostInGroupController {
     AutoPostInGroupService autoPostInGroupService;
 
     @PostMapping("/auto-post")
-    public ResponseEntity<String> autoCommentPost(@RequestParam ("content") String content,
-                                                  @RequestParam ("image") File image,
-                                                  @RequestParam ("groupId") String groupId,
-                                                  @RequestParam ("typeComp") String typeComp) throws InterruptedException {
-        AutoPostGroup autoPostGroup = new AutoPostGroup();
-        autoPostGroup.setContent(content);
-        autoPostGroup.setGroupId(groupId);
-        autoPostGroup.setTypeComp(typeComp);
-        autoPostGroup.setImage(image);
-
+    public ResponseEntity<String> autoPostGroup(@RequestBody AutoPostGroup autoPostGroup) throws InterruptedException {
+//        AutoPostGroup autoPostGroup = new AutoPostGroup();
+//        autoPostGroup.setContent(content);
+//        autoPostGroup.setGroupId(groupId);
+//        autoPostGroup.setTypeComp(typeComp);
         return autoPostInGroupService.autoCommentPost(autoPostGroup);
     }
 }

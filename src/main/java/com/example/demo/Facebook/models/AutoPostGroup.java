@@ -7,13 +7,13 @@ public class AutoPostGroup {
     private String content;
     private String groupId;
 
-    private File image;
+    private String image;
 
-    public File getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(File image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
