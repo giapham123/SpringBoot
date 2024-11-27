@@ -34,7 +34,7 @@ public class AutoPostInGroupService {
 
     public GenericResponse autoCommentPost(AutoPostGroup autoPostGroup) throws InterruptedException {
         GenericResponse rs = new GenericResponse();
-        WebDriver driver = configCommonFuncFirefox.loginByCookie(autoPostGroup.getTypeComp());
+        WebDriver driver = configCommonFuncFirefox.loginByCookie();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         // Navigate to the post page after adding cookies
         String[] splitGroupId = autoPostGroup.getGroupId().split(",");

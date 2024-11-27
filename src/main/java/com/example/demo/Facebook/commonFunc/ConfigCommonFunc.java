@@ -15,10 +15,12 @@ import java.util.List;
 @Component
 public class ConfigCommonFunc {
 
-    public WebDriver loginByCookie(String compType){
-        if (compType.toUpperCase().equals("MAC")) {
+    public WebDriver loginByCookie(){
+        boolean isMac = System.getProperty("os.name").toLowerCase().contains("mac");
+        boolean isWindows = System.getProperty("os.name").toLowerCase().contains("win");
+        if (isMac) {
             System.setProperty("webdriver.chrome.driver", "/Users/giapham/Documents/chromedriver-mac-x64/chromedriver");
-        } else {
+        } else if(isWindows){
             System.setProperty("webdriver.chrome.driver", "C:\\Users\\Admin\\Downloads\\chromedriver-win64\\chromedriver.exe");
         }
         ChromeOptions options = new ChromeOptions();

@@ -27,6 +27,13 @@ import org.openqa.selenium.chrome.ChromeOptions;
 @RequestMapping("/api/basic")
 public class BasicAuthController {
 
+    @GetMapping("/test1")
+    public ResponseEntity<String> secureEndpointBasic1(String urlPost) {
+        boolean isMac = System.getProperty("os.name").toLowerCase().contains("mac");
+        System.out.println(isMac);
+        return ResponseEntity.ok("adasdasd");
+    }
+
     @GetMapping("/test")
     public ResponseEntity<String> secureEndpointBasic(String urlPost) {
         //For Win

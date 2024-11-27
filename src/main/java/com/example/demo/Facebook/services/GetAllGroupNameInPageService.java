@@ -24,7 +24,7 @@ public class GetAllGroupNameInPageService {
 
     public GenericResponse getAllGroupNameInPage(GetUidUserInGroupModel getUidUserInGroupModel) throws InterruptedException {
         GenericResponse rs = new GenericResponse();
-        WebDriver driver = configCommonFuncFirefox.loginByCookie(getUidUserInGroupModel.getTypeComp());
+        WebDriver driver = configCommonFuncFirefox.loginByCookie();
         driver.navigate().to("https://web.facebook.com/groups/joins/?nav_source=tab");
         configCommonFunc.scrollTopToEndPage(getUidUserInGroupModel.getScrollNumbers(),driver);
         try {
