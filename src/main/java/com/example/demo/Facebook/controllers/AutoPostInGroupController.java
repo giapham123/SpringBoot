@@ -2,6 +2,7 @@ package com.example.demo.Facebook.controllers;
 
 import com.example.demo.Facebook.models.AutoPostGroup;
 import com.example.demo.Facebook.services.AutoPostInGroupService;
+import com.example.demo.common.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class AutoPostInGroupController {
     AutoPostInGroupService autoPostInGroupService;
 
     @PostMapping("/auto-post")
-    public ResponseEntity<String> autoPostGroup(@RequestBody AutoPostGroup autoPostGroup) throws InterruptedException {
+    public GenericResponse autoPostGroup(@RequestBody AutoPostGroup autoPostGroup) throws InterruptedException {
 //        AutoPostGroup autoPostGroup = new AutoPostGroup();
 //        autoPostGroup.setContent(content);
 //        autoPostGroup.setGroupId(groupId);

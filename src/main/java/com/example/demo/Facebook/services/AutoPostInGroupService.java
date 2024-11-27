@@ -5,6 +5,7 @@ import com.example.demo.Facebook.commonFunc.ConfigCommonFunc;
 import com.example.demo.Facebook.commonFunc.ConfigCommonFuncFirefox;
 import com.example.demo.Facebook.commonFunc.ConfigCommonFuncForRobotChooseFile;
 import com.example.demo.Facebook.models.AutoPostGroup;
+import com.example.demo.common.GenericResponse;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -16,6 +17,8 @@ import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AutoPostInGroupService {
@@ -29,12 +32,13 @@ public class AutoPostInGroupService {
     @Autowired
     ConfigCommonFuncFirefox configCommonFuncFirefox;
 
-    public ResponseEntity<String> autoCommentPost(AutoPostGroup autoPostGroup) throws InterruptedException {
-
+    public GenericResponse autoCommentPost(AutoPostGroup autoPostGroup) throws InterruptedException {
+        GenericResponse rs = new GenericResponse();
         WebDriver driver = configCommonFuncFirefox.loginByCookie(autoPostGroup.getTypeComp());
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         // Navigate to the post page after adding cookies
         String[] splitGroupId = autoPostGroup.getGroupId().split(",");
+        List<String> groupPostSuccess = new ArrayList<>();
         for(int i =0; i< splitGroupId.length; i++){
 //            driver.navigate().refresh();
             driver.get("https://facebook.com/groups/" + splitGroupId[i]);
@@ -79,16 +83,17 @@ public class AutoPostInGroupService {
 //                Click Post Button
                 WebElement clickPost = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@aria-label='Post']")));
                 clickPost.click();
-                Thread.sleep(1000);
-
+                Thread.sleep(10000);
+                groupPostSuccess.add(splitGroupId[i]);
             } catch (Exception e) {
                 System.out.println(e);
             }finally {
                 continue;
             }
         }
-
-        return ResponseEntity.ok("Post to group success.");
+        rs.setMessage("Post to group success.");
+        rs.setData(groupPostSuccess);
+        return rs;
     }
 
 
