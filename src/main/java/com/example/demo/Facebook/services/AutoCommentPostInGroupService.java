@@ -1,6 +1,7 @@
 package com.example.demo.Facebook.services;
 
 import com.example.demo.Facebook.commonFunc.ConfigCommonFunc;
+import com.example.demo.Facebook.commonFunc.ConfigCommonFuncFirefox;
 import com.example.demo.Facebook.models.AutoCommentPostGroup;
 import com.example.demo.Facebook.models.AutoPostGroup;
 import org.openqa.selenium.*;
@@ -24,7 +25,7 @@ import java.util.regex.Pattern;
 public class AutoCommentPostInGroupService {
 
     @Autowired
-    ConfigCommonFunc configCommonFunc;
+    ConfigCommonFuncFirefox configCommonFunc;
 
     public ResponseEntity<String> autoCommentPost(AutoCommentPostGroup autoPostGroup) throws InterruptedException {
 //        if(autoPostGroup.getTypeComp().toUpperCase().equals("MAC")){

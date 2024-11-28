@@ -1,6 +1,7 @@
 package com.example.demo.Facebook.services;
 
 import com.example.demo.Facebook.commonFunc.ConfigCommonFunc;
+import com.example.demo.Facebook.commonFunc.ConfigCommonFuncFirefox;
 import com.example.demo.Facebook.models.GetUidUserInGroupModel;
 import com.example.demo.Facebook.models.SharePostPageModel;
 import com.example.demo.common.GenericResponse;
@@ -23,7 +24,7 @@ import java.util.regex.Pattern;
 public class SharePostService {
 
     @Autowired
-    ConfigCommonFunc configCommonFunc;
+    ConfigCommonFuncFirefox configCommonFunc;
 
     public GenericResponse getAllPostId(SharePostPageModel sharePostPageModel) throws InterruptedException {
         GenericResponse rs = new GenericResponse();

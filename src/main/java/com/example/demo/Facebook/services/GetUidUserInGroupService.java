@@ -1,6 +1,7 @@
 package com.example.demo.Facebook.services;
 
 import com.example.demo.Facebook.commonFunc.ConfigCommonFunc;
+import com.example.demo.Facebook.commonFunc.ConfigCommonFuncFirefox;
 import com.example.demo.Facebook.models.GetUidUserInGroupModel;
 import com.example.demo.common.GenericResponse;
 import org.openqa.selenium.*;
@@ -15,7 +16,7 @@ import java.util.regex.Pattern;
 public class GetUidUserInGroupService {
 
     @Autowired
-    ConfigCommonFunc configCommonFunc;
+    ConfigCommonFuncFirefox configCommonFunc;
 
     public GenericResponse getUidUser(GetUidUserInGroupModel getUidUserInGroupModel) throws InterruptedException {
         GenericResponse rs = new GenericResponse();
