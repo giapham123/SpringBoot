@@ -54,15 +54,15 @@ public class ConfigCommonFuncFirefox {
 
         WebDriver driver = new FirefoxDriver(options);
         driver.get("https://www.fb.com");
-        if(pageId != null){
-            List<Cookie> cookies = new ArrayList<>();
-            cookies.add(new Cookie("i_user", pageId));
-            for (Cookie cookie : cookies) {
-                driver.manage().addCookie(cookie);
-            }
-        }else{
-            driver.manage().deleteCookieNamed("i_user");
-        }
+//        if(pageId != null){
+//            List<Cookie> cookies = new ArrayList<>();
+//            cookies.add(new Cookie("i_user", pageId));
+//            for (Cookie cookie : cookies) {
+//                driver.manage().addCookie(cookie);
+//            }
+//        }else{
+//            driver.manage().deleteCookieNamed("i_user");
+//        }
         return driver;
     }
 
