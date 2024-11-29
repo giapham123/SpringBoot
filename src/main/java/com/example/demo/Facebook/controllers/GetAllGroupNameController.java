@@ -24,9 +24,11 @@ public class GetAllGroupNameController {
     GetAllGroupNameInPageService getAllGroupNameInPageService;
 
     @PostMapping("/get-all-group-name")
-    public GenericResponse autoCommentPost(@RequestParam("scrollNumbers") int scrollNumbers) throws InterruptedException {
+    public GenericResponse autoCommentPost(@RequestParam("scrollNumbers") int scrollNumbers,
+                                           @RequestParam("pageId") String pageId) throws InterruptedException {
         GetUidUserInGroupModel getUidUserInGroupModel= new GetUidUserInGroupModel();
         getUidUserInGroupModel.setScrollNumbers(scrollNumbers);
+        getUidUserInGroupModel.setPageId(pageId);
 
         return getAllGroupNameInPageService.getAllGroupNameInPage(getUidUserInGroupModel);
     }

@@ -25,10 +25,12 @@ public class GetUidUserInGroupController {
 
     @PostMapping("/get-uid-user")
     public GenericResponse autoCommentPost( @RequestParam ("scrollNumbers") int scrollNumbers,
-                                                  @RequestParam ("groupId") String groupId) throws InterruptedException {
+                                                  @RequestParam ("groupId") String groupId,
+                                            @RequestParam ("pageId") String pageId) throws InterruptedException {
         GetUidUserInGroupModel getUidUserInGroupModel= new GetUidUserInGroupModel();
         getUidUserInGroupModel.setGroupId(groupId);
         getUidUserInGroupModel.setScrollNumbers(scrollNumbers);
+        getUidUserInGroupModel.setPageId(pageId);
 
         return getUidUserInGroupService.getUidUser(getUidUserInGroupModel);
     }

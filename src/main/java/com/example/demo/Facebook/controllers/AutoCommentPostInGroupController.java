@@ -24,10 +24,12 @@ public class AutoCommentPostInGroupController {
 
     @PostMapping("/auto-comment-post")
     public ResponseEntity<String> autoCommentPost(@RequestParam ("content") String content,
-                                                  @RequestParam ("groupId") String groupId) throws InterruptedException {
+                                                  @RequestParam ("groupId") String groupId,
+                                                  @RequestParam ("pageId") String pageId) throws InterruptedException {
         AutoCommentPostGroup autoPostGroup = new AutoCommentPostGroup();
         autoPostGroup.setContent(content);
         autoPostGroup.setGroupId(groupId);
+        autoPostGroup.setGroupId(pageId);
         return autoPostInGroupService.autoCommentPost(autoPostGroup);
     }
 }
