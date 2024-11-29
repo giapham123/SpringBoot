@@ -91,7 +91,6 @@ public class SharePostService {
                     // Click nút Share trong popup
                     WebElement popupShareButton = popup.findElement(By.cssSelector("span[data-ad-rendering-role='share_button']"));
                     ((JavascriptExecutor) driver).executeScript("arguments[0].click();", popupShareButton);
-                    System.out.println("Đã click Share trong popup thành công!");
                 }catch (Exception e){
                     WebElement clickShare = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[3]/div/div/div[2]/span/span")));
                     clickShare.click();

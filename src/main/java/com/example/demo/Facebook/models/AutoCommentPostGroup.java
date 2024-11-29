@@ -1,7 +1,6 @@
 package com.example.demo.Facebook.models;
 
 public class AutoCommentPostGroup {
-    private String typeComp;
     private String content;
     private String groupId;
 
@@ -21,11 +20,4 @@ public class AutoCommentPostGroup {
         this.groupId = groupId;
     }
 
-    public String getTypeComp() {
-        return typeComp;
-    }
-
-    public void setTypeComp(String typeComp) {
-        this.typeComp = typeComp;
-    }
 }

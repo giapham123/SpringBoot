@@ -7,7 +7,6 @@ public class SharePostPageModel {
     private String idPost;
     private String pageName;
     private int scrollNumbers;
-    private String typeComp;
     private List<String> groupName =new ArrayList<>();
 
     public int getScrollNumbers() {
@@ -24,14 +23,6 @@ public class SharePostPageModel {
 
     public void setPageName(String pageName) {
         this.pageName = pageName;
-    }
-
-    public String getTypeComp() {
-        return typeComp;
-    }
-
-    public void setTypeComp(String typeComp) {
-        this.typeComp = typeComp;
     }
 
     public String getIdPost() {

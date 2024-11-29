@@ -53,7 +53,7 @@ public class ConfigCommonFuncFirefox {
         options.setBinary(firefoxBinary);
 
         WebDriver driver = new FirefoxDriver(options);
-        driver.get("https://www.fb.com");
+            driver.get("https://www.fb.com");
 
         return driver;
     }

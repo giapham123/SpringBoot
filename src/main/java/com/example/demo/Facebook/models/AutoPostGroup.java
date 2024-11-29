@@ -3,7 +3,6 @@ package com.example.demo.Facebook.models;
 import java.io.File;
 
 public class AutoPostGroup {
-    private String typeComp;
     private String content;
     private String groupId;
 
@@ -33,11 +32,4 @@ public class AutoPostGroup {
         this.groupId = groupId;
     }
 
-    public String getTypeComp() {
-        return typeComp;
-    }
-
-    public void setTypeComp(String typeComp) {
-        this.typeComp = typeComp;
-    }
 }
