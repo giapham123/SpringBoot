@@ -40,7 +40,7 @@ public class AutoSharePostPageController {
     SharePostService sharePostService;
 
     @PostMapping("/share-post-page")
-    public ResponseEntity<String> secureEndpointBasic(@RequestBody SharePostPageModel sharePostPageModel) throws InterruptedException {
+    public GenericResponse secureEndpointBasic(@RequestBody SharePostPageModel sharePostPageModel) throws InterruptedException {
         return sharePostService.sharePostPage(sharePostPageModel);
     }
 
