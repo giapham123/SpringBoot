@@ -28,7 +28,7 @@ public class SharePostService {
 
     public GenericResponse getAllPostId(SharePostPageModel sharePostPageModel) throws InterruptedException {
         GenericResponse rs = new GenericResponse();
-        WebDriver driver = configCommonFunc.loginByCookie();
+        WebDriver driver = configCommonFunc.loginByCookie(sharePostPageModel.getPageId());
         driver.navigate().to("https://web.facebook.com/"+sharePostPageModel.getPageName());
         configCommonFunc.scrollTopToEndPage(sharePostPageModel.getScrollNumbers(),driver);
         try {
@@ -75,7 +75,7 @@ public class SharePostService {
 
     public GenericResponse sharePostPage(SharePostPageModel sharePostPageModel){
         GenericResponse rs = new GenericResponse();
-        WebDriver driver = configCommonFunc.loginByCookie();
+        WebDriver driver = configCommonFunc.loginByCookie(sharePostPageModel.getPageId());
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         List<String> listGroupShareSuccess = new ArrayList<>();
         List<String> listGroupShareFail= new ArrayList<>();

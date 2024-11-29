@@ -2,7 +2,7 @@ package com.example.demo.Facebook.models;
 
 import java.io.File;
 
-public class AutoPostGroup {
+public class AutoPostGroup extends CommonModel{
     private String content;
     private String groupId;
 

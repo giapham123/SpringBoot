@@ -1,6 +1,6 @@
 package com.example.demo.Facebook.models;
 
-public class GetUidUserInGroupModel {
+public class GetUidUserInGroupModel extends CommonModel{
     private String groupId;
     private int scrollNumbers;
 

@@ -60,7 +60,7 @@ public class AutoCommentPostInGroupService {
 //        for (Cookie cookie : cookies) {
 //            driver.manage().addCookie(cookie);
 //        }
-        WebDriver driver = configCommonFunc.loginByCookie();
+        WebDriver driver = configCommonFunc.loginByCookie(autoPostGroup.getPageId());
         // Navigate to the post page after adding cookies
         driver.navigate().to("https://facebook.com/groups/"+ autoPostGroup.getGroupId());
         for(int i =0; i<10; i++){

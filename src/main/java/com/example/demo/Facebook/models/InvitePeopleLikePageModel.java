@@ -1,6 +1,6 @@
 package com.example.demo.Facebook.models;
 
-public class InvitePeopleLikePageModel {
+public class InvitePeopleLikePageModel extends CommonModel{
 
     String groupName;
 

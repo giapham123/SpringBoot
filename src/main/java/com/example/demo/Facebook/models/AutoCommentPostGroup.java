@@ -1,6 +1,6 @@
 package com.example.demo.Facebook.models;
 
-public class AutoCommentPostGroup {
+public class AutoCommentPostGroup extends CommonModel{
     private String content;
     private String groupId;
 

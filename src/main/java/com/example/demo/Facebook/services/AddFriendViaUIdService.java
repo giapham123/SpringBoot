@@ -27,7 +27,7 @@ public class AddFriendViaUIdService {
 
     public GenericResponse autoAddFriend(AddFriendViaUIdModel addFriendViaUIdModel) throws InterruptedException {
         GenericResponse rs = new GenericResponse();
-        WebDriver driver = configCommonFuncFirefox.loginByCookie();
+        WebDriver driver = configCommonFuncFirefox.loginByCookie(addFriendViaUIdModel.getPageId());
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         List<String> listUIdSuccessAdd = new ArrayList<>();
         List<String> listUIdFailAdd = new ArrayList<>();

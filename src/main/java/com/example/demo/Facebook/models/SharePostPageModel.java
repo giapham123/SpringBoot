@@ -3,7 +3,7 @@ package com.example.demo.Facebook.models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SharePostPageModel {
+public class SharePostPageModel extends CommonModel{
     private String idPost;
     private String pageName;
     private int scrollNumbers;

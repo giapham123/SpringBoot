@@ -21,7 +21,7 @@ import java.util.Map;
 @Component
 public class ConfigCommonFuncFirefox {
 
-    public WebDriver loginByCookie(){
+    public WebDriver loginByCookie(String pageId){
         String profilePath = "";
         boolean isMac = System.getProperty("os.name").toLowerCase().contains("mac");
         boolean isWindows = System.getProperty("os.name").toLowerCase().contains("win");
@@ -53,8 +53,16 @@ public class ConfigCommonFuncFirefox {
         options.setBinary(firefoxBinary);
 
         WebDriver driver = new FirefoxDriver(options);
-            driver.get("https://www.fb.com");
-
+        driver.get("https://www.fb.com");
+        if(pageId != null){
+            List<Cookie> cookies = new ArrayList<>();
+            cookies.add(new Cookie("i_user", pageId));
+            for (Cookie cookie : cookies) {
+                driver.manage().addCookie(cookie);
+            }
+        }else{
+            driver.manage().deleteCookieNamed("i_user");
+        }
         return driver;
     }
 

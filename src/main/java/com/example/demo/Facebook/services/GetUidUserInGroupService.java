@@ -57,7 +57,7 @@ public class GetUidUserInGroupService {
 //            driver.manage().addCookie(cookie);
 //        }
         // End Login by cookie
-        WebDriver driver = configCommonFunc.loginByCookie();
+        WebDriver driver = configCommonFunc.loginByCookie(getUidUserInGroupModel.getPageId());
         // Navigate to the post page after adding cookies
         driver.navigate().to("https://facebook.com/groups/" + getUidUserInGroupModel.getGroupId() + "/members");
         // Scroll top to end

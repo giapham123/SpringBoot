@@ -24,11 +24,11 @@ public class InvitePeopleLikePageService {
     @Autowired
     ConfigCommonFuncFirefox configCommonFuncFirefox;
 
-    public GenericResponse autoInvitePeopleLikePage(String groupname) throws InterruptedException {
+    public GenericResponse autoInvitePeopleLikePage(InvitePeopleLikePageModel invitePeopleLikePageModel) throws InterruptedException {
         GenericResponse rs = new GenericResponse();
-        WebDriver driver = configCommonFuncFirefox.loginByCookie();
+        WebDriver driver = configCommonFuncFirefox.loginByCookie(invitePeopleLikePageModel.getPageId());
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        driver.get("https://facebook.com/"+ groupname);
+        driver.get("https://facebook.com/"+ invitePeopleLikePageModel.getGroupName());
         try {
             WebElement clickOptions = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class, 'x78zum5')]//div[@aria-label='See Options']")));
             clickOptions.click();

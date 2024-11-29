@@ -36,7 +36,7 @@ public class AutoPostInGroupService {
         boolean isMac = System.getProperty("os.name").toLowerCase().contains("mac");
         boolean isWindows = System.getProperty("os.name").toLowerCase().contains("win");
         GenericResponse rs = new GenericResponse();
-        WebDriver driver = configCommonFuncFirefox.loginByCookie();
+        WebDriver driver = configCommonFuncFirefox.loginByCookie(autoPostGroup.getPageId());
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         // Navigate to the post page after adding cookies
         String[] splitGroupId = autoPostGroup.getGroupId().split(",");

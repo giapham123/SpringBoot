@@ -2,7 +2,7 @@ package com.example.demo.Facebook.models;
 
 import java.util.List;
 
-public class AddFriendViaUIdModel {
+public class AddFriendViaUIdModel extends CommonModel{
     List<String> uId;
 
     public List<String> getuId() {

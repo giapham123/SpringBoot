@@ -1,5 +1,6 @@
 package com.example.demo.Facebook.controllers;
 
+import com.example.demo.Facebook.models.InvitePeopleLikePageModel;
 import com.example.demo.Facebook.services.InvitePeopleLikePageService;
 import com.example.demo.common.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ public class InvitePeopleLikePageController {
 
     @PostMapping("/auto-invite-people-like")
     public GenericResponse autoCommentPost(@RequestParam ("groupName") String groupname) throws InterruptedException {
-        return invitePeopleLikePageService.autoInvitePeopleLikePage(groupname);
+        InvitePeopleLikePageModel model = new InvitePeopleLikePageModel();
+        model.setGroupName(groupname);
+        return invitePeopleLikePageService.autoInvitePeopleLikePage(model);
     }
 }
