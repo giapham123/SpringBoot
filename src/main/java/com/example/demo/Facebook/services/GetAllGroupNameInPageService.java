@@ -49,7 +49,7 @@ public class GetAllGroupNameInPageService {
                     groupid = href.split("/groups/")[1].replaceAll("/$", ""); // Remove trailing slash
                 }
                 if(!text.split("\n")[0].isEmpty() && !text.split("\n")[0].equals("View group")){
-                    uniqueNumbers.add(text.split("\n")[0] + ":" +groupid);
+                    uniqueNumbers.add(text.split("\n")[0] + "-------------------" +groupid);
                     uniqueGroupNameNoId.add(text.split("\n")[0]);
                     System.out.println("Text: " + href);
                     groupId += groupid +",";
@@ -58,13 +58,17 @@ public class GetAllGroupNameInPageService {
             }
             for (String data : uniqueNumbers) {
                 String dataRemove = data;
-                String[] splitText = data.split(":");
+                String[] splitText = data.split("-------------------");
                 if(!splitText[0].isEmpty()){
                     try {
                         driver.get("https://web.facebook.com/groups/" + splitText[1]);
                         WebElement element = driver.findElement(By.xpath("//a[contains(@href, '/groups/"+splitText[1]+"/members/')]"));
-                        Thread.sleep(2000);
-                        dataRemove += ":" + element.getText();
+                        Thread.sleep(1000);
+                        if(element.getText().isEmpty()){
+                            element = driver.findElement(By.xpath("//a[contains(@href, 'groups') and contains(@href, 'members')]"));
+                            Thread.sleep(1000);
+                        }
+                        dataRemove += "-------------------" + element.getText();
                         uniqueNumbersNumMembers.add(dataRemove);
                         System.out.println("Get " + splitText[0]);
                     } catch (Exception e) {
