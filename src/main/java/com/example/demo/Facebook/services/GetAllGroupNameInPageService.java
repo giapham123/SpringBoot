@@ -39,11 +39,14 @@ public class GetAllGroupNameInPageService {
             for (WebElement link : links) {
                 String href = link.getAttribute("href");
                 String text = link.getText(); // Lấy nội dung văn bản
-                Pattern pattern = Pattern.compile("\\d+");
-                Matcher matcher = pattern.matcher(href);
+//                Pattern pattern = Pattern.compile("\\d+");
+//                Matcher matcher = pattern.matcher(href);
                 String groupid = "";
-                while (matcher.find()) {
-                    groupid = matcher.group();
+//                while (matcher.find()) {
+//                    groupid = matcher.group();
+//                }
+                if (href.contains("/groups/")) {
+                    groupid = href.split("/groups/")[1].replaceAll("/$", ""); // Remove trailing slash
                 }
                 if(!text.split("\n")[0].isEmpty() && !text.split("\n")[0].equals("View group")){
                     uniqueNumbers.add(text.split("\n")[0] + ":" +groupid);
