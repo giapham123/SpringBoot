@@ -42,6 +42,7 @@ public class ConfigCommonFuncFirefox {
         firefoxBinary.addCommandLineOptions("--no-remote");  // Ensure it's a fresh session
 
         FirefoxOptions options = new FirefoxOptions();
+        options.addArguments("--headless"); //Hide browser when run
         options.addPreference("dom.webnotifications.enabled", false);
         options.setProfile(profile);
         if (isMac) {

@@ -31,6 +31,7 @@ public class GetAllGroupNameInPageService {
 
             List<WebElement> links = driver.findElements(By.xpath("//a[contains(@href, 'facebook.com/groups/')]"));
             Set<String> uniqueNumbers = new HashSet<>();
+            Set<String> uniqueNumbersNumMembers = new HashSet<>();
             Set<String> uniqueGroupNameNoId = new HashSet<>();
             String groupId = "";
 
@@ -52,19 +53,34 @@ public class GetAllGroupNameInPageService {
                 }
 
             }
+            for (String data : uniqueNumbers) {
+                String dataRemove = data;
+                String[] splitText = data.split(":");
+                if(!splitText[0].isEmpty()){
+                    try {
+                        driver.get("https://web.facebook.com/groups/" + splitText[1]);
+                        WebElement element = driver.findElement(By.xpath("//a[contains(@href, '/groups/"+splitText[1]+"/members/')]"));
+                        Thread.sleep(2000);
+                        dataRemove += ":" + element.getText();
+                        uniqueNumbersNumMembers.add(dataRemove);
+                        System.out.println("Get " + splitText[0]);
+                    } catch (Exception e) {
+//                        System.out.println(e);
+                    }
+                }
+            }
 
-
-            System.out.println("Total groups in page: " + uniqueNumbers.size());
+            driver.quit();
+            System.out.println("Total groups in page: " + uniqueNumbersNumMembers.size());
 
             //Set data for return
             Map resultData = new HashMap();
-            resultData.put("totalGroupName", uniqueNumbers.size());
-            resultData.put("totalGroupNameAndId", uniqueNumbers);
+            resultData.put("totalGroupName", uniqueNumbersNumMembers.size());
+            resultData.put("totalGroupNameAndId", uniqueNumbersNumMembers);
             resultData.put("totalGroupName", uniqueGroupNameNoId);
             resultData.put("groupId",groupId);
             rs.setData(resultData);
             rs.setMessage("Get All Group In Page Success");
-            driver.quit();
             return rs;
         }catch (Exception e){
             rs.setData(null);
