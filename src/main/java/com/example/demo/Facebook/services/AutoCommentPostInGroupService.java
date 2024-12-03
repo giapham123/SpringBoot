@@ -4,6 +4,7 @@ import com.example.demo.Facebook.commonFunc.ConfigCommonFunc;
 import com.example.demo.Facebook.commonFunc.ConfigCommonFuncFirefox;
 import com.example.demo.Facebook.models.AutoCommentPostGroup;
 import com.example.demo.Facebook.models.AutoPostGroup;
+import com.example.demo.common.GenericResponse;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -27,39 +28,8 @@ public class AutoCommentPostInGroupService {
     @Autowired
     ConfigCommonFuncFirefox configCommonFunc;
 
-    public ResponseEntity<String> autoCommentPost(AutoCommentPostGroup autoPostGroup) throws InterruptedException {
-//        if(autoPostGroup.getTypeComp().toUpperCase().equals("MAC")){
-//            System.setProperty("webdriver.chrome.driver", "/Users/giapham/Documents/chromedriver-mac-x64/chromedriver");
-//        }else{
-//            System.setProperty("webdriver.chrome.driver", "C:\\Users\\Admin\\Downloads\\chromedriver-win64\\chromedriver.exe");
-//        }
-//        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--disable-notifications");
-//        options.setExperimentalOption("detach", false);
-//        options.addArguments("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36");
-//
-//        WebDriver driver = new ChromeDriver(options);
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-//
-//        // Add cookies for login
-//        driver.get("https://www.facebook.com");
-//        List<Cookie> cookies = new ArrayList<>();
-//
-//        cookies.add(new Cookie("c_user", "61568239606429"));//1
-//        cookies.add(new Cookie("datr", "mwg0Z9THOO1-yWEpQbBW07Sx"));//2
-//        cookies.add(new Cookie("i_user", "100066835222220"));
-//        cookies.add(new Cookie("locale", "en_US"));
-//        cookies.add(new Cookie("ps_l", "1"));
-//        cookies.add(new Cookie("ps_n", "1"));
-//        cookies.add(new Cookie("sb", "mwg0Z16z_I75ZUIAXFwsTihu"));//4
-//        cookies.add(new Cookie("wd", "872x75"));
-//        cookies.add(new Cookie("fr", "1K0gQHZbuaUpoSS03.AWV5LR_JDEgmfee-hSvtEMAEXEw.BnPZyS..AAA.0.0.BnPe1j.AWXlZtq1FII"));//3
-//        cookies.add(new Cookie("xs", "14%3APDjZjuM9Bp0zjw%3A2%3A1732111650%3A-1%3A-1"));
-//
-//        // Add necessary cookies here
-//        for (Cookie cookie : cookies) {
-//            driver.manage().addCookie(cookie);
-//        }
+    public GenericResponse autoCommentPost(AutoCommentPostGroup autoPostGroup) throws InterruptedException {
+        GenericResponse rs = new GenericResponse();
         WebDriver driver = configCommonFunc.loginByCookie(autoPostGroup.getPageId());
         // Navigate to the post page after adding cookies
         driver.navigate().to("https://facebook.com/groups/"+ autoPostGroup.getGroupId());
@@ -76,6 +46,7 @@ public class AutoCommentPostInGroupService {
         // Lấy tất cả các thẻ <a>
         List<WebElement> links = driver.findElements(By.tagName("a"));
         Set<String> uniqueNumbers = new HashSet<>();
+        Set<String> listLinkComment = new HashSet<>();
 
         // In ra các URL hợp lệ
         for (WebElement link : links) {
@@ -92,26 +63,44 @@ public class AutoCommentPostInGroupService {
         }
         for (String data : uniqueNumbers) {
             driver.navigate().to("https://facebook.com/groups/"+ autoPostGroup.getGroupId()+"/posts/"+data);
-            Thread.sleep(5000);
+            listLinkComment.add("https://facebook.com/groups/"+ autoPostGroup.getGroupId()+"/posts/"+data);
+            Thread.sleep(2000);
             try{
                 //
-                WebElement postBox = driver.findElement(By.xpath("//div[@aria-label='Answer as Ốp Lưng Điện Thoại Iphone - Samsung']"));
+//                WebElement postBox = driver.findElement(By.xpath("//div[@aria-label='Comment as Ốp Lưng Điện Thoại Iphone - Samsung']"));
+                WebElement postBox = driver.findElement(By.xpath("//div[contains(@aria-label, 'Comment as')]"));
                 postBox.click();
-                postBox.sendKeys(autoPostGroup.getContent() + Keys.ENTER);
-                Thread.sleep(3000); // Wait for the next set of groups to load
+                String content = autoPostGroup.getContent();
+                for (char c : content.toCharArray()) {
+                    postBox.sendKeys(String.valueOf(c));
+                    Thread.sleep(100); // Small delay between keystrokes
+                }
+                postBox.sendKeys(Keys.ENTER);
+                Thread.sleep(5000); // Small delay between keystrokes
+//                postBox.sendKeys(autoPostGroup.getContent() );
+//                Thread.sleep(3000); // Wait for the next set of groups to load
             }catch (Exception e){
                 try {
-                    WebElement postBox = driver.findElement(By.xpath("//div[@aria-label='Comment as Ốp Lưng Điện Thoại Iphone - Samsung']"));
+//                    WebElement postBox = driver.findElement(By.xpath("//div[@aria-label='Comment as Ốp Lưng Điện Thoại Iphone - Samsung']"));
+                    WebElement postBox = driver.findElement(By.xpath("//div[contains(@aria-label, 'Answer as')]"));
                     postBox.click();
-                    postBox.sendKeys(autoPostGroup.getContent() + Keys.ENTER);
-                    Thread.sleep(3000); // Wait for the next set of groups to load
+                    String content = autoPostGroup.getContent();
+                    for (char c : content.toCharArray()) {
+                        postBox.sendKeys(String.valueOf(c));
+                        Thread.sleep(100); // Small delay between keystrokes
+                    }
+                    postBox.sendKeys(Keys.ENTER);
+                    Thread.sleep(5000); // Small delay between keystrokes
+//                    postBox.sendKeys(autoPostGroup.getContent() );
+//                    Thread.sleep(3000); // Wait for the next set of groups to load
                 }catch (Exception ex){
                     System.out.println(ex);
-                    return ResponseEntity.ok("Failed for comment posts in group. Please check element.");
                 }
             }
 
         }
-        return ResponseEntity.ok("Comment for posts in group success. Total posts for comment: " + uniqueNumbers.size());
+        rs.setData(listLinkComment);
+        rs.setMessage("Comment for posts in group success. Total posts for comment:" + uniqueNumbers.size());
+        return rs;
     }
 }
