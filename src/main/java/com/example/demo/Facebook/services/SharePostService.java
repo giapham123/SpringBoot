@@ -73,7 +73,7 @@ public class SharePostService {
         }
     }
 
-    public GenericResponse sharePostPage(SharePostPageModel sharePostPageModel){
+    public GenericResponse sharePostPage(SharePostPageModel sharePostPageModel) throws InterruptedException {
         GenericResponse rs = new GenericResponse();
         WebDriver driver = configCommonFunc.loginByCookie(sharePostPageModel.getPageId());
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));

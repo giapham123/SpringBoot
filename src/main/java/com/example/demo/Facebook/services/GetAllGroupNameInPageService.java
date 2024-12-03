@@ -83,7 +83,7 @@ public class GetAllGroupNameInPageService {
             //Set data for return
             Map resultData = new HashMap();
             resultData.put("totalGroup", uniqueNumbersNumMembers.size());
-            resultData.put("groupId",groupId);
+//            resultData.put("groupId",groupId);
             resultData.put("totalGroupName", uniqueGroupNameNoId);
             resultData.put("totalGroupNameAndId", uniqueNumbersNumMembers);
 

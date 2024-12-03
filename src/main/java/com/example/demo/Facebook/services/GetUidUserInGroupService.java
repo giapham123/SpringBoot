@@ -60,17 +60,6 @@ public class GetUidUserInGroupService {
         WebDriver driver = configCommonFunc.loginByCookie(getUidUserInGroupModel.getPageId());
         // Navigate to the post page after adding cookies
         driver.navigate().to("https://facebook.com/groups/" + getUidUserInGroupModel.getGroupId() + "/members");
-        // Scroll top to end
-        //        for (int i = 0; i < getUidUserInGroupModel.getScrollNumbers(); i++) {
-//            // Tạo đối tượng JavascriptExecutor
-//            JavascriptExecutor js = (JavascriptExecutor) driver;
-//            // Cuộn xuống cuối trang
-//            js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-//            // Chờ một lúc để kiểm tra
-//            Thread.sleep(2000);
-//            System.out.println("Đã cuộn xuống cuối trang.");
-//        }
-        // End Scroll top to end
         configCommonFunc.scrollTopToEndPage(getUidUserInGroupModel.getScrollNumbers(),driver);
         try {
             List<WebElement> links = driver.findElements(By.tagName("a"));

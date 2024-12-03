@@ -21,7 +21,7 @@ import java.util.Map;
 @Component
 public class ConfigCommonFuncFirefox {
 
-    public WebDriver loginByCookie(String pageId){
+    public WebDriver loginByCookie(String pageId) throws InterruptedException {
         String profilePath = "";
         boolean isMac = System.getProperty("os.name").toLowerCase().contains("mac");
         boolean isWindows = System.getProperty("os.name").toLowerCase().contains("win");
@@ -42,7 +42,7 @@ public class ConfigCommonFuncFirefox {
         firefoxBinary.addCommandLineOptions("--no-remote");  // Ensure it's a fresh session
 
         FirefoxOptions options = new FirefoxOptions();
-        options.addArguments("--headless"); //Hide browser when run
+//        options.addArguments("--headless"); //Hide browser when run
         options.addPreference("dom.webnotifications.enabled", false);
         options.setProfile(profile);
         if (isMac) {
@@ -55,15 +55,16 @@ public class ConfigCommonFuncFirefox {
 
         WebDriver driver = new FirefoxDriver(options);
         driver.get("https://www.fb.com");
-//        if(pageId != null){
-//            List<Cookie> cookies = new ArrayList<>();
-//            cookies.add(new Cookie("i_user", pageId));
-//            for (Cookie cookie : cookies) {
-//                driver.manage().addCookie(cookie);
-//            }
-//        }else{
-//            driver.manage().deleteCookieNamed("i_user");
-//        }
+        if(pageId != null){
+            List<Cookie> cookies = new ArrayList<>();
+            cookies.add(new Cookie("i_user", pageId));
+            for (Cookie cookie : cookies) {
+                driver.manage().addCookie(cookie);
+            }
+        }else{
+            driver.manage().deleteCookieNamed("i_user");
+        }
+        Thread.sleep(4000);
         return driver;
     }
 
