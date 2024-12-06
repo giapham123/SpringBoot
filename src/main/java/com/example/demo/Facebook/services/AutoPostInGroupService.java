@@ -90,7 +90,7 @@ public class AutoPostInGroupService {
                 WebElement clickPost = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@aria-label='Post']")));
                 clickPost.click();
                 Thread.sleep(10000);
-                groupPostSuccess.add(splitGroupId[i]);
+                groupPostSuccess.add("https://facebook.com/groups/" + splitGroupId[i]);
             } catch (Exception e) {
                 System.out.println(e);
             }finally {
