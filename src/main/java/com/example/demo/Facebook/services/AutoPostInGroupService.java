@@ -97,6 +97,7 @@ public class AutoPostInGroupService {
                 continue;
             }
         }
+        driver.quit();
         rs.setMessage("Post to group success.");
         rs.setData(groupPostSuccess);
         return rs;
