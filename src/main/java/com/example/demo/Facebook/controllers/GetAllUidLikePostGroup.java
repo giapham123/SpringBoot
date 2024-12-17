@@ -22,4 +22,12 @@ public class GetAllUidLikePostGroup {
         GetAllUidLikePostModel model = new GetAllUidLikePostModel();
         return getAllUidLikePostGroupService.getAllUidLikePost(model);
     }
+
+
+    @PostMapping("/get-all-uid-comment-post")
+    public GenericResponse getAllUidCommentInPost(@RequestParam ("groupId") String groupId) throws InterruptedException {
+        GetAllUidLikePostModel model = new GetAllUidLikePostModel();
+        model.setGroupId(groupId);
+        return getAllUidLikePostGroupService.getAllUidCommentInPost(model);
+    }
 }

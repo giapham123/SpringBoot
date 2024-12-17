@@ -15,9 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -136,6 +134,68 @@ public class GetAllUidLikePostGroupService {
         return rs;
     }
 
+
+    public GenericResponse getAllUidCommentInPost(GetAllUidLikePostModel getAllUidLikePostModel) throws InterruptedException {
+        GenericResponse rs = new GenericResponse();
+        WebDriver driver = configCommonFuncFirefox.loginByCookie(getAllUidLikePostModel.getPageId());
+        driver.navigate().to("https://facebook.com/groups/"+ getAllUidLikePostModel.getGroupId());
+        for(int i =0; i<3; i++){
+            // Tạo đối tượng JavascriptExecutor
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+
+            // Cuộn xuống cuối trang
+            js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+
+            // Chờ một lúc để kiểm tra
+            Thread.sleep(2000);
+        }
+        // Lấy tất cả các thẻ <a>
+        List<WebElement> links = driver.findElements(By.tagName("a"));
+        Set<String> uniqueNumbers = new HashSet<>();
+        Set<String> listLinkComment = new HashSet<>();
+
+        // In ra các URL hợp lệ
+        for (WebElement link : links) {
+            String url = link.getAttribute("href");
+            if (url != null && !url.isEmpty() && url.contains("pcb")) {
+                // Define a pattern to match numbers after 'pcb.'
+                Pattern pattern = Pattern.compile("pcb.(\\d+)");
+                // Loop through each link and extract the number after 'pcb.'
+                Matcher matcher = pattern.matcher(url);
+                if (matcher.find()) {
+                    uniqueNumbers.add(matcher.group(1)); // Add number to the Set
+                }
+            }
+        }
+        Set<String> uniqueNumbersUid = new HashSet<>();
+
+        for (String data : uniqueNumbers) {
+            driver.navigate().to("https://facebook.com/groups/" + getAllUidLikePostModel.getGroupId() + "/posts/" + data);
+            listLinkComment.add("https://facebook.com/groups/" + getAllUidLikePostModel.getGroupId() + "/posts/" + data);
+            Thread.sleep(2000);
+
+            List<WebElement> linksForGetUidCmt = driver.findElements(By.xpath(
+                    "//div[contains(@class, 'html-div') and contains(@class, 'xdj266r') and contains(@class, 'x11i5rnm') and contains(@class, 'xat24cr') and contains(@class, 'x1mh8g0r') and contains(@class, 'xexx8yu') and contains(@class, 'x18d9i69') and contains(@class, 'x1swvt13') and contains(@class, 'x1pi30zi') and contains(@class, 'x1n2onr6')]//a"        ));
+            // In ra các URL hợp lệ
+            for (WebElement link : linksForGetUidCmt) {
+                String url = link.getAttribute("href");
+                if (url != null && !url.isEmpty() && url.contains("groups/"+getAllUidLikePostModel.getGroupId()+"/user")) {
+                    Pattern pattern = Pattern.compile("/user/(\\d+)");
+                    Matcher matcher = pattern.matcher(url);
+                    if (matcher.find()) {
+                        uniqueNumbersUid.add(matcher.group(1)); // Add number to the Set
+                    }
+                }
+            }
+        }
+
+        driver.quit();
+        Map data = new HashMap();
+        data.put("Uid",uniqueNumbersUid);
+        data.put("Post",listLinkComment);
+        rs.setData(data);
+        return rs;
+    }
 
     private static void scrollElement(JavascriptExecutor js, WebElement element) {
         try {
