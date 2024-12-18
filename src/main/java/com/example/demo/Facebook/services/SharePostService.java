@@ -94,7 +94,7 @@ public class SharePostService {
                 }catch (Exception e){
                     //Edit for click Share button on post
                     //WebElement clickShare = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[3]/div/div/div[2]/span/span")));
-                    WebElement dialogPost = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@role='dialog']")));
+                    WebElement dialogPost = driver.findElement(By.xpath("//div[@role='dialog']"));
                     WebElement clickShare = dialogPost.findElement(By.xpath("//div[@aria-label='Send this to friends or post it on your profile.']//span[@data-ad-rendering-role='share_button']"));
                     clickShare.click();
                     //End edit
