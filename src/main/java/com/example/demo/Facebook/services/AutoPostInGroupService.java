@@ -49,6 +49,72 @@ public class AutoPostInGroupService {
                 WebElement clickShare = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(.,'Write something...')]")));
                 clickShare.click();
                 Thread.sleep(1000); // Đợi hộp mở ra
+                //Xác định dialog CREATE POST
+                WebElement dialog = driver.findElement(By.xpath("//div[@role='dialog' and contains(@class, 'x1n2onr6')]"));
+
+                String[] pathsArray = autoPostGroup.getImage().split(",");
+
+                //Xác định input file từ dialog CREATE POST
+                WebElement imageInput = dialog.findElement(By.xpath(".//input[@type='file']"));
+                //Input từng hình
+                for (String path : pathsArray) {
+                    imageInput.sendKeys(path.trim()); // Trim to remove extra spaces or newlines
+                }
+                Thread.sleep(500);
+
+                //Input Content
+                try{
+                    WebElement postBox = dialog.findElement(By.xpath("//div[@aria-label='Create a public post…']"));
+                    String[] lines = autoPostGroup.getContent().split("\n");
+                    for (String line : lines) {
+                        postBox.sendKeys(line);
+                        postBox.sendKeys(Keys.RETURN);  // Simulate pressing "Enter" to create a new line
+                        Thread.sleep(500); // Delay to mimic human-like typing behavior
+                    }
+                }catch (Exception e){
+                    WebElement postBox = dialog.findElement(By.xpath("//div[@aria-label='Write something...']"));
+                    String[] lines = autoPostGroup.getContent().split("\n");
+                    for (String line : lines) {
+                        postBox.sendKeys(line);
+                        postBox.sendKeys(Keys.RETURN);  // Simulate pressing "Enter" to create a new line
+                        Thread.sleep(500); // Delay to mimic human-like typing behavior
+                    }
+                }
+                Thread.sleep(1000); // Wait for the next set of groups to load
+//                Click Post Button
+                WebElement clickPost = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@aria-label='Post']")));
+                clickPost.click();
+                Thread.sleep(10000);
+                groupPostSuccess.add("https://facebook.com/groups/" + splitGroupId[i]);
+            } catch (Exception e) {
+                System.out.println(e);
+            }finally {
+                continue;
+            }
+        }
+        driver.quit();
+        rs.setMessage("Post to group success.");
+        rs.setData(groupPostSuccess);
+        return rs;
+    }
+
+    public GenericResponse autoCommentPostBK(AutoPostGroup autoPostGroup) throws InterruptedException {
+        boolean isMac = System.getProperty("os.name").toLowerCase().contains("mac");
+        boolean isWindows = System.getProperty("os.name").toLowerCase().contains("win");
+        GenericResponse rs = new GenericResponse();
+        WebDriver driver = configCommonFuncFirefox.loginByCookie(autoPostGroup.getPageId());
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        // Navigate to the post page after adding cookies
+        String[] splitGroupId = autoPostGroup.getGroupId().split(",");
+        List<String> groupPostSuccess = new ArrayList<>();
+        for(int i =0; i< splitGroupId.length; i++){
+//            driver.navigate().refresh();
+            driver.get("https://facebook.com/groups/" + splitGroupId[i]);
+            Thread.sleep(1000); // Đợi hộp mở ra
+            try {
+                WebElement clickShare = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(.,'Write something...')]")));
+                clickShare.click();
+                Thread.sleep(1000); // Đợi hộp mở ra
 
                 WebElement clickShare1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@aria-label='Photo/video']")));
                 clickShare1.click();
