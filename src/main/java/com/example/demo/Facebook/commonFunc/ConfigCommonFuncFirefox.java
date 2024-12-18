@@ -10,6 +10,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -20,6 +21,9 @@ import java.util.Map;
 
 @Component
 public class ConfigCommonFuncFirefox {
+
+    @Autowired
+    SwitchPage switchPage;
 
     public WebDriver loginByCookie(String pageId) throws InterruptedException {
         String profilePath = "";
@@ -62,9 +66,8 @@ public class ConfigCommonFuncFirefox {
                 driver.manage().addCookie(cookie);
             }
         }else{
-            driver.manage().deleteCookieNamed("i_user");
+            switchPage.switchPage(driver,"Chuyên Nông Sản Sạch Tây Nguyên - GPFarm47");
         }
-//        Thread.sleep(4000);
         return driver;
     }
 
