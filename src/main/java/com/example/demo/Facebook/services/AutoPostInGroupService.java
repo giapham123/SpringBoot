@@ -32,7 +32,7 @@ public class AutoPostInGroupService {
     @Autowired
     ConfigCommonFuncFirefox configCommonFuncFirefox;
 
-    public GenericResponse autoCommentPost(AutoPostGroup autoPostGroup) throws InterruptedException {
+    public GenericResponse autoPostInGroup(AutoPostGroup autoPostGroup) throws InterruptedException {
         boolean isMac = System.getProperty("os.name").toLowerCase().contains("mac");
         boolean isWindows = System.getProperty("os.name").toLowerCase().contains("win");
         GenericResponse rs = new GenericResponse();
@@ -48,10 +48,9 @@ public class AutoPostInGroupService {
             try {
                 WebElement clickShare = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(.,'Write something...')]")));
                 clickShare.click();
-                Thread.sleep(1000); // Đợi hộp mở ra
+                Thread.sleep(5000); // Đợi hộp mở ra
                 //Xác định dialog CREATE POST
                 WebElement dialog = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@role='dialog' and contains(@class, 'x1n2onr6')]")));
-
                 String[] pathsArray = autoPostGroup.getImage().split(",");
 
                 //Xác định input file từ dialog CREATE POST

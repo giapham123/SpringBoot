@@ -64,7 +64,7 @@ public class ConfigCommonFuncFirefox {
         }else{
             driver.manage().deleteCookieNamed("i_user");
         }
-        Thread.sleep(4000);
+//        Thread.sleep(4000);
         return driver;
     }
 
