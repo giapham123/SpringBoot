@@ -50,7 +50,7 @@ public class AutoPostInGroupService {
                 clickShare.click();
                 Thread.sleep(1000); // Đợi hộp mở ra
                 //Xác định dialog CREATE POST
-                WebElement dialog = driver.findElement(By.xpath("//div[@role='dialog' and contains(@class, 'x1n2onr6')]"));
+                WebElement dialog = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@role='dialog' and contains(@class, 'x1n2onr6')]")));
 
                 String[] pathsArray = autoPostGroup.getImage().split(",");
 
