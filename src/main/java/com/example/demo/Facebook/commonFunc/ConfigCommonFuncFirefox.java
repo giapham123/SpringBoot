@@ -67,6 +67,8 @@ public class ConfigCommonFuncFirefox {
             }
         }else{
             switchPage.switchPage(driver,"Chuyên Nông Sản Sạch Tây Nguyên - GPFarm47");
+//                        switchPage.switchPage(driver,"Phạm Gia");
+
         }
         return driver;
     }
