@@ -29,9 +29,9 @@ public class GetAllUidLikePostGroupService {
 
     public GenericResponse getAllUidLikePost(GetAllUidLikePostModel getAllUidLikePostModel) throws InterruptedException {
         GenericResponse rs = new GenericResponse();
-        WebDriver driver = configCommonFuncFirefox.loginByCookie("111111");
-        driver.navigate().to("https://facebook.com/groups/1908251769308065");
-        for(int i =0; i<1; i++){
+        WebDriver driver = configCommonFuncFirefox.loginByCookie(getAllUidLikePostModel.getPageId());
+        driver.navigate().to("https://facebook.com/groups/"+getAllUidLikePostModel.getGroupId());
+        for(int i =0; i<5; i++){
             // Tạo đối tượng JavascriptExecutor
             JavascriptExecutor js = (JavascriptExecutor) driver;
 
@@ -56,28 +56,29 @@ public class GetAllUidLikePostGroupService {
                 Matcher matcher = pattern.matcher(url);
                 if (matcher.find()) {
                     uniqueNumbers.add(matcher.group(1)); // Add number to the Set
-                    break;
+//                    break;
                 }
             }
         }
         Set<String> uniqueNumbersUid = new HashSet<>();
         for (String data : uniqueNumbers) {
-            driver.navigate().to("https://www.facebook.com/groups/535148127127030/posts/1585342455440920");
+            driver.navigate().to("https://www.facebook.com/groups/"+getAllUidLikePostModel.getGroupId()+"/posts/"+data);
             listLinkComment.add("https://facebook.com/groups/" + getAllUidLikePostModel.getGroupId() + "/posts/" + data);
+            Thread.sleep(2000);
             try {
                 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-                WebElement clickReaction = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@aria-label='See who reacted to this']")));
+                WebElement clickReaction = driver.findElement(By.xpath("//span[@aria-label='See who reacted to this']"));
                 clickReaction.click();
                 WebElement clickReaction1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@aria-label, 'Show') and contains(@aria-label, 'reacted with All')]")));
                 clickReaction1.click();
                 Thread.sleep(5000);
             }catch (Exception e){
-                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-                WebElement clickReaction = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@aria-label='See who reacted to this']")));
-                clickReaction.click();
-                WebElement clickReaction1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@aria-label, 'Show') and contains(@aria-label, 'reacted with All')]")));
-                clickReaction1.click();
-                Thread.sleep(5000);
+//                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//                WebElement clickReaction = driver.findElement(By.xpath("//span[@aria-label='See who reacted to this']"));
+//                clickReaction.click();
+//                WebElement clickReaction1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@aria-label, 'Show') and contains(@aria-label, 'reacted with All')]")));
+//                clickReaction1.click();
+//                Thread.sleep(5000);
             }
 
             //Scroll Dialog Reaction
@@ -110,17 +111,16 @@ public class GetAllUidLikePostGroupService {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                continue;
             }
             //End Scroll Dialog Reaction
-
 
             WebElement dialog1 = driver.findElement(By.xpath("//div[@role='dialog']"));
             List<WebElement> linksUid = dialog1.findElements(By.tagName("a"));
             // In ra các URL hợp lệ
             for (WebElement link : linksUid) {
                 String url = link.getAttribute("href");
-                if (url != null && !url.isEmpty() && url.contains("groups/535148127127030/user")) {
+                if (url != null && !url.isEmpty() && url.contains("groups/" + getAllUidLikePostModel.getGroupId() + "/user")) {
                     Pattern pattern = Pattern.compile("/user/(\\d+)");
                     Matcher matcher = pattern.matcher(url);
                     if (matcher.find()) {
@@ -128,6 +128,7 @@ public class GetAllUidLikePostGroupService {
                     }
                 }
             }
+
         }
         driver.quit();
         rs.setData(uniqueNumbersUid);

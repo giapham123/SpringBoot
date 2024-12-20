@@ -18,8 +18,9 @@ public class GetAllUidLikePostGroup {
     GetAllUidLikePostGroupService getAllUidLikePostGroupService;
 
     @PostMapping("/get-all-uid-like-post")
-    public GenericResponse getAllUidLikePost() throws InterruptedException {
+    public GenericResponse getAllUidLikePost(@RequestParam ("groupId") String groupId) throws InterruptedException {
         GetAllUidLikePostModel model = new GetAllUidLikePostModel();
+        model.setGroupId(groupId);
         return getAllUidLikePostGroupService.getAllUidLikePost(model);
     }
 
