@@ -3,6 +3,7 @@ package com.example.demo.Facebook.controllers;
 import com.example.demo.Facebook.models.SharePostPageModel;
 import com.example.demo.Facebook.services.SharePostService;
 import com.example.demo.common.GenericResponse;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -45,9 +46,13 @@ public class AutoSharePostPageController {
     }
 
     @PostMapping("/get-all-post-id")
-    public GenericResponse getAllPostId(@RequestParam("scrollNumbers") int scrollNumbers,
-                                        @RequestParam("pageName") String pageName,
-                                        @RequestParam ("pageId") String pageId) throws InterruptedException {
+    public GenericResponse getAllPostId(
+            @Parameter(example = "1")
+            @RequestParam("scrollNumbers") int scrollNumbers,
+            @Parameter(example = "gp.farm47")
+            @RequestParam("pageName") String pageName,
+            @Parameter(example = "100063707646753")
+            @RequestParam ("pageId") String pageId) throws InterruptedException {
         SharePostPageModel postPageModel =new SharePostPageModel();
         postPageModel.setScrollNumbers(scrollNumbers);
         postPageModel.setPageName(pageName);

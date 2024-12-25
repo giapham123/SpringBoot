@@ -4,6 +4,7 @@ import com.example.demo.Facebook.models.GetAllUidLikePostModel;
 import com.example.demo.Facebook.services.GetAllUidLikePostGroupService;
 import com.example.demo.Facebook.services.GetUidUserInGroupService;
 import com.example.demo.common.GenericResponse;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,9 @@ public class GetAllUidLikePostGroup {
     GetAllUidLikePostGroupService getAllUidLikePostGroupService;
 
     @PostMapping("/get-all-uid-like-post")
-    public GenericResponse getAllUidLikePost(@RequestParam ("groupId") String groupId) throws InterruptedException {
+    public GenericResponse getAllUidLikePost(
+            @Parameter(example = "2447675352168096")
+            @RequestParam ("groupId") String groupId) throws InterruptedException {
         GetAllUidLikePostModel model = new GetAllUidLikePostModel();
         model.setGroupId(groupId);
         return getAllUidLikePostGroupService.getAllUidLikePost(model);

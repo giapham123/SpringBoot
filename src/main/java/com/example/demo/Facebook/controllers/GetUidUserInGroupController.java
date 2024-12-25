@@ -5,6 +5,7 @@ import com.example.demo.Facebook.models.GetUidUserInGroupModel;
 import com.example.demo.Facebook.services.AutoPostInGroupService;
 import com.example.demo.Facebook.services.GetUidUserInGroupService;
 import com.example.demo.common.GenericResponse;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,9 +25,13 @@ public class GetUidUserInGroupController {
     GetUidUserInGroupService getUidUserInGroupService;
 
     @PostMapping("/get-uid-user")
-    public GenericResponse autoCommentPost( @RequestParam ("scrollNumbers") int scrollNumbers,
-                                                  @RequestParam ("groupId") String groupId,
-                                            @RequestParam ("pageId") String pageId) throws InterruptedException {
+    public GenericResponse autoCommentPost(
+            @Parameter(example = "3")
+            @RequestParam ("scrollNumbers") int scrollNumbers,
+            @Parameter(example = "491957408792445")
+            @RequestParam ("groupId") String groupId,
+            @Parameter(example = "100063707646753")
+            @RequestParam ("pageId") String pageId) throws InterruptedException {
         GetUidUserInGroupModel getUidUserInGroupModel= new GetUidUserInGroupModel();
         getUidUserInGroupModel.setGroupId(groupId);
         getUidUserInGroupModel.setScrollNumbers(scrollNumbers);

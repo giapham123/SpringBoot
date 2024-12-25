@@ -3,6 +3,7 @@ package com.example.demo.Facebook.controllers;
 import com.example.demo.Facebook.models.GetUidUserInGroupModel;
 import com.example.demo.Facebook.services.GetAllGroupNameInPageService;
 import com.example.demo.common.GenericResponse;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +25,11 @@ public class GetAllGroupNameController {
     GetAllGroupNameInPageService getAllGroupNameInPageService;
 
     @PostMapping("/get-all-group-name")
-    public GenericResponse autoCommentPost(@RequestParam("scrollNumbers") int scrollNumbers,
-                                           @RequestParam("pageId") String pageId) throws InterruptedException {
+    public GenericResponse autoCommentPost(
+            @Parameter(example = "1")
+            @RequestParam("scrollNumbers") int scrollNumbers,
+            @Parameter(example = "100063707646753")
+            @RequestParam("pageId") String pageId) throws InterruptedException {
         GetUidUserInGroupModel getUidUserInGroupModel= new GetUidUserInGroupModel();
         getUidUserInGroupModel.setScrollNumbers(scrollNumbers);
         getUidUserInGroupModel.setPageId(pageId);
