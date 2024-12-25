@@ -71,6 +71,14 @@ public class SecurityConfig {
                         .requestMatchers("/api/authenticate").permitAll()
                         .requestMatchers("/api/checkLogin").permitAll()
                         .requestMatchers("/api/basic/**").authenticated() // Basic Auth cho các API bắt đầu bằng /api/basic/
+                        .requestMatchers(
+                                "/swagger-ui/**",      // Swagger UI static files
+                                "/api-docs/**",     // OpenAPI docs
+                                "/swagger-resources/**", // Swagger resource handler
+                                "/webjars/**",         // Webjars for Swagger
+                                "/configuration/ui",   // Swagger UI configuration
+                                "/configuration/security" // Swagger security configuration
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults()) //Actice Basic Auth
