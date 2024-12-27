@@ -36,6 +36,10 @@ dependencies {
 	implementation 'io.github.bonigarcia:webdrivermanager:5.5.1'    // Ensure this is the latest version
 
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0' // Adjust version as needed
+	implementation 'io.micrometer:micrometer-registry-prometheus'
+	implementation 'io.micrometer:micrometer-core'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
 }
 
 tasks.named('test') {

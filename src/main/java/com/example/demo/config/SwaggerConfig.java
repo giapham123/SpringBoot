@@ -38,7 +38,7 @@ public class SwaggerConfig {
     public GroupedOpenApi privateApi() {
         return GroupedOpenApi.builder()
                 .group("private")
-                .pathsToExclude("/api/authenticate","/api/basic1/**","/api/greet","/api/secure-endpoint","/api/basic/test11","/api/basic/test","/api/basic/test1") // Exclude private APIs
+                .pathsToExclude("/api/authenticate","/api/basic1/**","/api/secure-endpoint","/api/basic/test11","/api/basic/test","/api/basic/test1") // Exclude private APIs
                 .build();
     }
 }
