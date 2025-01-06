@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,6 +22,9 @@ public class GetAllGroupNameInPageService {
 
     @Autowired
     ConfigCommonFuncFirefox configCommonFuncFirefox;
+
+    @Autowired
+    MultipleGetQuantityMembersGroupService multipleGetQuantityMembersGroupService;
 
     public GenericResponse getAllGroupNameInPage(GetUidUserInGroupModel getUidUserInGroupModel) throws InterruptedException {
         GenericResponse rs = new GenericResponse();
@@ -56,28 +60,30 @@ public class GetAllGroupNameInPageService {
                 }
 
             }
-            for (String data : uniqueNumbers) {
-                String dataRemove = data;
-                String[] splitText = data.split("-------------------");
-                if(!splitText[0].isEmpty()){
-                    try {
-                        driver.get("https://web.facebook.com/groups/" + splitText[1]);
-                        WebElement element = driver.findElement(By.xpath("//a[contains(@href, '/groups/"+splitText[1]+"/members/')]"));
-                        Thread.sleep(1000);
-                        if(element.getText().isEmpty()){
-                            element = driver.findElement(By.xpath("//a[contains(@href, 'groups') and contains(@href, 'members')]"));
-                            Thread.sleep(1000);
-                        }
-                        dataRemove += "-------------------" + element.getText();
-                        uniqueNumbersNumMembers.add(dataRemove);
-                        System.out.println("Get " + splitText[0]);
-                    } catch (Exception e) {
-//                        System.out.println(e);
-                    }
-                }
-            }
-
             driver.quit();
+            List<CompletableFuture<Void>> futures = new ArrayList<>();
+            for (String data : uniqueNumbers) {
+                    String dataRemove = data;
+                    String[] splitText = data.split("-------------------");
+                    if (!splitText[0].isEmpty()) {
+                        try {
+                            CompletableFuture<String> future;
+                            future = multipleGetQuantityMembersGroupService.processTaskMultipleGetNumMembers(data, "123");
+
+                            CompletableFuture<Void> resultFuture = future.thenAccept(result -> {
+                                uniqueNumbersNumMembers.add(result);
+                                System.out.println("Result for user " + data + ": " + result);
+                            }).exceptionally(ex -> {
+                                System.out.println("Error processing user " + data + ": " + ex.getMessage());
+                                return null;
+                            });
+                            futures.add(resultFuture);
+                        } catch (Exception e) {
+                            //                        System.out.println(e);
+                        }
+                    }
+            }
+            CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
             System.out.println("Total groups in page: " + uniqueNumbersNumMembers.size());
 
             //Set data for return
