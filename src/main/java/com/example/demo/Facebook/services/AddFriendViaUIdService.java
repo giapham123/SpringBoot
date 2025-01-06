@@ -6,6 +6,7 @@ import com.example.demo.Facebook.models.AddFriendViaUIdModel;
 import com.example.demo.Facebook.models.AutoPostGroup;
 import com.example.demo.common.GenericResponse;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -34,12 +35,23 @@ public class AddFriendViaUIdService {
         for(int i = 0;i<addFriendViaUIdModel.getuId().size(); i++) {
             driver.get("https://facebook.com/"+ addFriendViaUIdModel.getuId().get(i));
             try {
+                WebElement cancelRequestButton = driver.findElement(By.xpath("//span[contains(text(),'Cancel request')]"));
+                JavascriptExecutor js = (JavascriptExecutor) driver;
+                js.executeScript("arguments[0].click();", cancelRequestButton);
+                Thread.sleep(2000);
                 WebElement clickButtonAddFriend = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class, 'xh8yej3')]//div[@aria-label='Add friend']")));
                 clickButtonAddFriend.click();
                 listUIdSuccessAdd.add(addFriendViaUIdModel.getuId().get(i));
                 Thread.sleep(3000);
             } catch (Exception e) {
-                listUIdFailAdd.add(addFriendViaUIdModel.getuId().get(i));
+                try {
+                    WebElement clickButtonAddFriend = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[contains(@class, 'xh8yej3')]//div[@aria-label='Add friend' and contains(@class, 'xh8yej3')]")));
+                    clickButtonAddFriend.click();
+                    listUIdSuccessAdd.add(addFriendViaUIdModel.getuId().get(i));
+                    Thread.sleep(3000);
+                } catch (Exception ex) {
+                    listUIdFailAdd.add(addFriendViaUIdModel.getuId().get(i));
+                }
             }finally {
                 continue;
             }
