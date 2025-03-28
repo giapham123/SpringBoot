@@ -48,7 +48,7 @@ public class AutoPostInGroupService {
             try {
                 WebElement clickShare = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(.,'Write something...')]")));
                 clickShare.click();
-                Thread.sleep(5000); // Đợi hộp mở ra
+                Thread.sleep(500); // Đợi hộp mở ra
                 //Xác định dialog CREATE POST
                 WebElement dialog = driver.findElement(By.xpath("//div[@role='dialog' and contains(@class, 'x1n2onr6')]"));
 
@@ -62,15 +62,16 @@ public class AutoPostInGroupService {
 
                 //Xác định input file từ dialog CREATE POST
                 WebElement imageInput = dialog.findElement(By.xpath(".//input[@type='file']"));;
-
-                imageInput.sendKeys(autoPostGroup.getImage());//Add hình kiểu String và mỗi hình phân cách nhau bằng \n
-
-                //Input từng hình bản cũ
-//                String[] pathsArray = autoPostGroup.getImage().split(",");
-//                for (String path : pathsArray) {
-//                    imageInput.sendKeys(path.trim()); // Trim to remove extra spaces or newlines
-//                }
-                Thread.sleep(5000);
+                try {
+                    imageInput.sendKeys(autoPostGroup.getImage());//Add hình kiểu String và mỗi hình phân cách nhau bằng \n
+                } catch (Exception e) {
+                    //Input từng hình bản cũ
+                    String[] pathsArray = autoPostGroup.getImage().split(",");
+                    for (String path : pathsArray) {
+                        imageInput.sendKeys(path.trim()); // Trim to remove extra spaces or newlines input tuừng hình
+                    }
+                }
+                Thread.sleep(500);
 
                 //Input Content
                 try{
