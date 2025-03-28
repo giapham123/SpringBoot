@@ -51,16 +51,26 @@ public class AutoPostInGroupService {
                 Thread.sleep(5000); // Đợi hộp mở ra
                 //Xác định dialog CREATE POST
                 WebElement dialog = driver.findElement(By.xpath("//div[@role='dialog' and contains(@class, 'x1n2onr6')]"));
-                String[] pathsArray = autoPostGroup.getImage().split(",");
+
+                //code click add to photo và click add photo để thêm hình
+                WebElement addToPostButton = dialog.findElement(By.xpath("//span[contains(text(), 'Add to your post')]"));
+                addToPostButton.click();
+                Thread.sleep(500);
+                WebElement photoVideoButton = dialog.findElement(By.xpath("//span[contains(text(), 'Photo/video')]"));
+                photoVideoButton.click();
+                // kết thuc code click add to photo và click add photo để thêm hình
 
                 //Xác định input file từ dialog CREATE POST
                 WebElement imageInput = dialog.findElement(By.xpath(".//input[@type='file']"));;
 
-                //Input từng hình
-                for (String path : pathsArray) {
-                    imageInput.sendKeys(path.trim()); // Trim to remove extra spaces or newlines
-                }
-                Thread.sleep(500);
+                imageInput.sendKeys(autoPostGroup.getImage());//Add hình kiểu String và mỗi hình phân cách nhau bằng \n
+
+                //Input từng hình bản cũ
+//                String[] pathsArray = autoPostGroup.getImage().split(",");
+//                for (String path : pathsArray) {
+//                    imageInput.sendKeys(path.trim()); // Trim to remove extra spaces or newlines
+//                }
+                Thread.sleep(5000);
 
                 //Input Content
                 try{
