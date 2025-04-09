@@ -7,6 +7,7 @@ import com.example.demo.Facebook.commonFunc.ConfigCommonFuncForRobotChooseFile;
 import com.example.demo.Facebook.models.AutoPostGroup;
 import com.example.demo.common.GenericResponse;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,7 @@ public class AutoPostInGroupService {
 
                 //Xác định input file từ dialog CREATE POST
                 WebElement imageInput = dialog.findElement(By.xpath(".//input[@type='file']"));;
+                Thread.sleep(2000);
                 try {
                     imageInput.sendKeys(autoPostGroup.getImage());//Add hình kiểu String và mỗi hình phân cách nhau bằng \n
                 } catch (Exception e) {
@@ -76,20 +78,42 @@ public class AutoPostInGroupService {
                 //Input Content
                 try{
                     WebElement postBox = dialog.findElement(By.xpath("//div[@aria-label='Create a public post…']"));
-                    String[] lines = autoPostGroup.getContent().split("\n");
-                    for (String line : lines) {
-                        postBox.sendKeys(line);
-                        postBox.sendKeys(Keys.RETURN);  // Simulate pressing "Enter" to create a new line
-                        Thread.sleep(500); // Delay to mimic human-like typing behavior
+                    String content = autoPostGroup.getContent();
+                    StringSelection stringSelection = new StringSelection(content);
+                    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+                    postBox.click();
+                    Thread.sleep(500);
+                    Actions actions = new Actions(driver);
+                    if(isMac){
+                        actions.keyDown(Keys.COMMAND).sendKeys("v").keyUp(Keys.COMMAND).perform();//This is for mac
+                    }else{
+                        actions.keyDown(Keys.CONTROL).sendKeys("v").keyUp(Keys.CONTROL).perform();
                     }
+//                    String[] lines = autoPostGroup.getContent().split("\n");
+//                    for (String line : lines) {
+//                        postBox.sendKeys(line);
+//                        postBox.sendKeys(Keys.RETURN);  // Simulate pressing "Enter" to create a new line
+//                        Thread.sleep(500); // Delay to mimic human-like typing behavior
+//                    }
                 }catch (Exception e){
                     WebElement postBox = dialog.findElement(By.xpath("//div[@aria-label='Write something...']"));
-                    String[] lines = autoPostGroup.getContent().split("\n");
-                    for (String line : lines) {
-                        postBox.sendKeys(line);
-                        postBox.sendKeys(Keys.RETURN);  // Simulate pressing "Enter" to create a new line
-                        Thread.sleep(500); // Delay to mimic human-like typing behavior
+                    String content = autoPostGroup.getContent();
+                    StringSelection stringSelection = new StringSelection(content);
+                    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+                    postBox.click();
+                    Thread.sleep(500);
+                    Actions actions = new Actions(driver);
+                    if(isMac){
+                        actions.keyDown(Keys.COMMAND).sendKeys("v").keyUp(Keys.COMMAND).perform();//This is for mac
+                    }else{
+                        actions.keyDown(Keys.CONTROL).sendKeys("v").keyUp(Keys.CONTROL).perform();
                     }
+//                    String[] lines = autoPostGroup.getContent().split("\n");
+//                    for (String line : lines) {
+//                        postBox.sendKeys(line);
+//                        postBox.sendKeys(Keys.RETURN);  // Simulate pressing "Enter" to create a new line
+//                        Thread.sleep(500); // Delay to mimic human-like typing behavior
+//                    }
                 }
                 Thread.sleep(1000); // Wait for the next set of groups to load
 //                Click Post Button
