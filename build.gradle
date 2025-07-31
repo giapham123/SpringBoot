@@ -14,6 +14,13 @@ java {
 	}
 }
 
+apply plugin: 'war'
+
+bootWar {
+	archiveFileName = 'myapp.war'         // So Tomcat loads it automatically
+	destinationDirectory = file("$rootDir/target")
+}
+
 repositories {
 	mavenCentral()
 }
