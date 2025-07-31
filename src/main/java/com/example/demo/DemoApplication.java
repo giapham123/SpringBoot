@@ -27,6 +27,4 @@ public class DemoApplication {
 		filterRegistrationBean.setEnabled(false);
 		return filterRegistrationBean;
 	}
-
-
 }

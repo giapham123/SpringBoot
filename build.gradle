@@ -16,7 +16,8 @@ java {
 apply plugin: 'war'
 
 bootWar {
-	archiveFileName = 'ROOT.war'         // So Tomcat loads it automatically
+	archiveFileName = 'myapp.war'         // So Tomcat loads it automatically
+	destinationDirectory = file("$rootDir/target")
 }
 
 repositories {
