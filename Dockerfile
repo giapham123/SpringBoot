@@ -1,14 +1,12 @@
-# Use the official Tomcat 10 base image (Java 17 included)
+# Stage 1: Build WAR using Gradle
+FROM gradle:8.7-jdk17 AS builder
+WORKDIR /app
+COPY . .
+RUN gradle clean build -x test
+
+# Stage 2: Deploy WAR to Tomcat 10
 FROM tomcat:10.1-jdk17
-
-# Remove default web apps (optional but cleaner)
 RUN rm -rf /usr/local/tomcat/webapps/*
-
-# Copy your WAR file into the Tomcat webapps directory
-COPY target/myapp.war /usr/local/tomcat/webapps/ROOT.war
-
-# Expose port 8080
+COPY --from=builder /app/target/*.war /usr/local/tomcat/webapps/ROOT.war
 EXPOSE 8080
-
-# Start Tomcat
 CMD ["catalina.sh", "run"]
