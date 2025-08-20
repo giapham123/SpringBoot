@@ -16,10 +16,10 @@ version = '0.0.1-SNAPSHOT'
 
 apply plugin: 'war'
 
-bootWar {
-	archiveFileName = 'myapp.war'         // So Tomcat loads it automatically
-	destinationDirectory = file("$rootDir/target")
-}
+// bootWar {
+// 	archiveFileName = 'myapp.war'         // So Tomcat loads it automatically
+// 	destinationDirectory = file("$rootDir/target")
+// }
 
 repositories {
 	mavenCentral()
